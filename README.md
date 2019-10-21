@@ -3,19 +3,6 @@ Rendering the Pillar markup inside the Pharo image
 
 This is work in (early) progress, but I think it is far enough for a "technology preview".
 
-At the moment it will load the whole of Pillar, but I hope to fix that soon.
-
-Load it using Metacello:
-
-```Smalltalk
-Metacello new
-   baseline: 'PillarRichTextRender';
-   repository: 'github://kasperosterbye/PillarRichTextRender';
-   load.
-```
-
-Once loaded, the class `PRRichTextComposer` has some examples on the class side.
-
 ### Goal of the project
 The goal of the project is to be able to do better in-image documentation. To do this, I am working on several fronts:
 
@@ -30,3 +17,20 @@ Reg. 1., I can only figure out how to transform a morphic table into an image, a
 Reg. 2. I am nearly done on this one, at least for the easy aspects (headers, lists, emphasis, code-blocks).
 
 Reg 3 and 4. Only loose ideas atm.
+
+### Trying it out
+
+Load it using Metacello:
+
+```Smalltalk
+Metacello new
+   baseline: 'PillarRichTextRender';
+   repository: 'github://kasperosterbye/PillarRichTextRender';
+   load.
+```
+
+At the moment it will load the whole of Pillar, but I hope to fix that soon.
+
+Once loaded, the class `PRRichTextComposer` has some examples on the class side.
+
+
