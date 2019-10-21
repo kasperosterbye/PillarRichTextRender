@@ -11,7 +11,7 @@ BaselineOfPillarRichTextExporter >> baseline: spec [
 		for: #common
 		do: [ spec blessing: #development.
 			spec
-				baseline: 'BaselineOfPillarCore'
-					with: [ spec repository: 'github://pillar-markup/pillar:dev-7' ];
-				package: 'Pillar-ExporterRichText' ] 
+				baseline: 'PillarCore'
+					with: [ spec repository: 'github://pillar-markup/pillar:dev-7/src' ];
+				package: 'Pillar-ExporterRichText' ]
 ]
