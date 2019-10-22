@@ -24,7 +24,7 @@ Load it using Metacello:
 
 ```Smalltalk
 Metacello new
-   baseline: 'PillarRichTextRender';
+   baseline: 'PillarRichTextExporter';
    repository: 'github://kasperosterbye/PillarRichTextRender';
    load.
 ```
