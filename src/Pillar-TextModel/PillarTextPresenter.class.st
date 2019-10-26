@@ -1,10 +1,5 @@
 "
-I am a simple presenter which allow rendering of pillar source in the image.
-
-See class side example of how to use.
-
-You toggle render/edit mode using the cmd-e key.
-
+I am a simple """"Spec Presenter"""" which ''allow'' """"rendering of pillar source"""" in the image.See class side example of how to use.You toggle render/edit mode using the cmd-r key. Cools
 "
 Class {
 	#name : #PillarTextPresenter,
@@ -62,18 +57,8 @@ PillarTextPresenter >> initialize [
 		toAction: [ self toggleMode  ].
 	self
 		acceptBlock: [ :src | 
-			self switchToRenderModeWithSource.
+			self switchToRenderMode.
 			false ]
-]
-
-{ #category : #accessing }
-PillarTextPresenter >> isRendering [
-	^ isRendering
-]
-
-{ #category : #accessing }
-PillarTextPresenter >> isRendering: anObject [
-	isRendering := anObject
 ]
 
 { #category : #accessing }
@@ -94,7 +79,7 @@ PillarTextPresenter >> switchToEditMode [
 ]
 
 { #category : #'as yet unclassified' }
-PillarTextPresenter >> switchToRenderModeWithSource [
+PillarTextPresenter >> switchToRenderMode [
 	self source: self pendingText.
 	self text: self asRenderedText.
 	isRendering := true.
@@ -112,5 +97,5 @@ PillarTextPresenter >> text [
 PillarTextPresenter >> toggleMode [
 	isRendering 
 		ifTrue: [ self switchToEditMode  ]
-		ifFalse: [ self switchToRenderModeWithSource  ]
+		ifFalse: [ self switchToRenderMode  ]
 ]
