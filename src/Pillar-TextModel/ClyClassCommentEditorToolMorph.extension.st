@@ -23,6 +23,11 @@ ClyClassCommentEditorToolMorph >> disable [
 ]
 
 { #category : #'*Pillar-TextModel' }
+ClyClassCommentEditorToolMorph >> editingText [
+	^ editingClass comment
+]
+
+{ #category : #'*Pillar-TextModel' }
 ClyClassCommentEditorToolMorph >> enable [
 	textMorph enabled: true
 ]
