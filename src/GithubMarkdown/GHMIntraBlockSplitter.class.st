@@ -12,46 +12,50 @@ Class {
 	#category : #GithubMarkdown
 }
 
-{ #category : #private }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> match: size in: aString at: start [
+	"return the end of the string enclosed in the marker from start to start+size.
+	If no end marker is found, return the end of string.
+	Normal example: match: 2 in: 'abc**mmm**xyz' at: 4 returns 9 (index of first * of the last two)"
 	| end |
 	end := aString
 		findString: (aString copyFrom: start to: start + size - 1)
 		startingAt: start + size.
-	^ end + size
+	^ end = 0 ifTrue: [ aString size ] ifFalse: [ end-1 ]
 ]
 
-{ #category : #private }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchBlockIn: aString at: start [
-	| next |
-	next := self match: 1 in: aString at: start.
+	| end |
+	end := self match: 1 in: aString at: start.
 	^ self
 		spanOn: aString
 		from: start + 1
-		to: next - 2
-		next: next
+		to: end
+		next: end+2
 		kind: #block
 ]
 
-{ #category : #private }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchBoldIn: aString at: start [
-	| next |
-	next := self match: 2 in: aString at: start.
+	| end |
+	end := self match: 2 in: aString at: start.
 	^ self
 		spanOn: aString
 		from: start + 2
-		to: next - 3
-		next: next
+		to: end 
+		next: end +3
 		kind: #bold
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchImageIn: aString at: start [
 	"image annotation ![AltText](url)"
 
 	| regex text url next |
 	regex := RxMatcher forString: '!\[(.*)\]\((.*)\)'.
 	regex matches: (aString copyFrom: start to: aString size).
+	regex lastResult ifFalse: [ ^nil ].
 	text := regex subexpression: 2.
 	url := regex subexpression: 3.
 	next := start + (regex subexpression: 1) size.
@@ -64,21 +68,44 @@ GHMIntraBlockSplitter >> matchImageIn: aString at: start [
 		kind: #image
 ]
 
-{ #category : #private }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchItalicsIn: aString at: start [
 	| next |
 	next := self match: 1 in: aString at: start.
 	^ self
 		spanOn: aString
 		from: start + 1
-		to: next - 2
-		next: next
+		to: next 
+		next: next +2
 		kind: #italics
 ]
 
-{ #category : #private }
+{ #category : #'private-matching' }
+GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
+	"link annotation [AltText](url)"
+
+	| regex text url next |
+	regex := RxMatcher forString: '\[(.*)\]\((.*)\)'.
+	regex matches: (aString copyFrom: start to: aString size).
+	regex lastResult
+		ifFalse: [ ^ nil ].
+	text := regex subexpression: 2.
+	url := regex subexpression: 3.
+	next := start + (regex subexpression: 1) size.
+	^ GHMInlineBlockWithUrl new
+		string: aString;
+		start: start + 1;
+		end: start + 1 + text size - 1;
+		url: url;
+		next: next;
+		kind: #image
+]
+
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchMarkdownIn: aString at: start [
 	| char |
+	start >= aString size
+		ifTrue: [ ^ nil ].
 	char := aString at: start.
 	char = $* | (char = $_)
 		ifTrue: [ (aString at: start + 1) = $*
@@ -90,18 +117,20 @@ GHMIntraBlockSplitter >> matchMarkdownIn: aString at: start [
 		ifTrue: [ ^ self matchBlockIn: aString at: start ].
 	char = $!
 		ifTrue: [ ^ self matchImageIn: aString at: start ].
+	char = $[
+		ifTrue: [ ^self matchLinkIn: aString at: start  ].
 	^ nil
 ]
 
-{ #category : #private }
+{ #category : #'private-matching' }
 GHMIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
 	| next |
 	next := self match: 1 in: aString at: start.
 	^ self
 		spanOn: aString
 		from: start + 1
-		to: next - 2
-		next: next
+		to: next
+		next: next +2
 		kind: #strike
 ]
 
@@ -134,7 +163,7 @@ GHMIntraBlockSplitter >> splitString: aString [
 	start = 0
 		ifTrue: [ ^ {(self spanAllOf: aString kind: #plain)} ].
 	block := self matchMarkdownIn: aString at: start.
-	block end = 0
+	( block isNil or: [block end = 0])
 		ifTrue: [ ^ {(self spanAllOf: aString kind: #plain)} ].
 	rest := #().
 	block next < aString size

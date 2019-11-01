@@ -60,6 +60,19 @@ IntraBlockSplitterTest >> testSplitBlockImage [
 ]
 
 { #category : #tests }
+IntraBlockSplitterTest >> testSplitBlockLink [
+	"Test the image annotation [LinkText](url)"
+
+	| res |
+	res := GHMIntraBlockSplitter new
+		splitString: 'abc[LinkText](myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[LinkText]' . 'last'}.
+	self assert: res second url equals: 'myURL'
+]
+
+{ #category : #tests }
 IntraBlockSplitterTest >> testSplitBlockNested [
 	"Test with multiple annotations"
 
@@ -70,4 +83,35 @@ IntraBlockSplitterTest >> testSplitBlockNested [
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[xxx [www] yyy]' . 'last'}.
 	self assert: res second children second kind equals: #bold
+]
+
+{ #category : #tests }
+IntraBlockSplitterTest >> testSplitEmpty [
+	| res |
+	res := GHMIntraBlockSplitter new splitString: ''.
+	self assert: res first printString equals: ''.
+]
+
+{ #category : #tests }
+IntraBlockSplitterTest >> testSplitExclamationMark [
+	"Test that 'bla!bla' is ok, and not a failed image, same goes for '![goo]no parenthesis'"
+
+	| res |
+	res := GHMIntraBlockSplitter new splitString: 'bla!bla'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'bla!bla'}.
+	res := GHMIntraBlockSplitter new splitString: '![goo]no parenthesis'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'![goo]no parenthesis'}
+]
+
+{ #category : #tests }
+IntraBlockSplitterTest >> testSplitNotClosed [
+	| res |
+	res := GHMIntraBlockSplitter new splitString: 'abc**xyz'.
+	self assert: res second printString equals: '[xyz]'.
+	res := GHMIntraBlockSplitter new splitString: 'abc**xyz*'.
+	self assert: res second printString equals: '[xyz*]'.
 ]
