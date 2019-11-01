@@ -11,14 +11,19 @@ Class {
 	#category : #'Pillar-ExporterRichText'
 }
 
-{ #category : #examples }
-PRRichTextComposer class >> example1 [
-	<example>
-	(self new
+{ #category : #converting }
+PRRichTextComposer class >> asText: aStreamOrString [
+	^ self new
 		start:
 			(PRPillarParserMain
 				initialize;
-				parse:
+				parse: aStreamOrString asString)
+]
+
+{ #category : #examples }
+PRRichTextComposer class >> example1 [
+	<example>
+	(self asText:
 					'!!!First section
 and this is just ""first"" line 
 # Line 1 More here More here More here More here More here More here More here More here More here More here
@@ -27,17 +32,13 @@ and this is just ""first"" line
 # Line 2
 #-  Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
 #-- Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-# Line 3')) inspect
+# Line 3') inspect
 ]
 
 { #category : #examples }
 PRRichTextComposer class >> example2 [
 	<example>
-	(self new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse:
+	(self asText:
 					'!!!Description lists
 this is just ""first"" line
 # Here is frist enumaration
@@ -45,47 +46,35 @@ this is just ""first"" line
 #:color of the sky
 #:and my true love''s eyes
 #;red
-#:color of the fire')) inspect
+#:color of the fire') inspect
 ]
 
 { #category : #examples }
 PRRichTextComposer class >> example3 [
 	<example>
-	(self new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse:
+	(self asText:
 					'!!!Code sections
 this is just ""first"" line
 [[[foo=bar|jack
 this is some code
 and more here
-]]]')) inspect
+]]]') inspect
 ]
 
 { #category : #examples }
 PRRichTextComposer class >> example4 [
 	<example>
-	(self new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse:
+	(self asText:
 					'!!!Annotations
 this is just ""first"" line
 @@todo remember to do annotations
-and this is the second line')) inspect
+and this is the second line') inspect
 ]
 
 { #category : #examples }
 PRRichTextComposer class >> example5 [
 	<example>
-	(self new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse:
+	(self asText:
 					'!!!Links
 this is just ""first"" line
 
@@ -95,23 +84,19 @@ this is just ""first"" line
 
 *String»trim>browse://String/trim*
 
-and this is the second line')) inspect
+and this is the second line') inspect
 ]
 
 { #category : #examples }
 PRRichTextComposer class >> example6 [
 	<example>
-	(self new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse:
+	(self asText:
 					'!!!Figures
 this is just ""first"" line
 
 +Pharologo>https://files.pharo.org/media/logo/logo.png+
 
-and this is the second line')) inspect
+and this is the second line') inspect
 ]
 
 { #category : #private }
