@@ -1,3 +1,13 @@
+"
+I am a code block. I look like this, starting and ending with three $`
+
+```annotations
+line 1
+line 2
+line 3
+``` 
+
+"
 Class {
 	#name : #GHMCodeBlock,
 	#superclass : #GHMAbstractBlock,

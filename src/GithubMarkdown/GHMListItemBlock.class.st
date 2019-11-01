@@ -1,3 +1,6 @@
+"
+I represent one item in a list (ordered or non-ordered)
+"
 Class {
 	#name : #GHMListItemBlock,
 	#superclass : #GHMAbstractBlock,

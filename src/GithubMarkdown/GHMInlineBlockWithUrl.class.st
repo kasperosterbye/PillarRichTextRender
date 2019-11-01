@@ -1,3 +1,6 @@
+"
+I am used to represent links and images which has a url.
+"
 Class {
 	#name : #GHMInlineBlockWithUrl,
 	#superclass : #GHMInlineBlock,

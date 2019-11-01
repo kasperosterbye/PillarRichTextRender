@@ -1,3 +1,6 @@
+"
+I am the root of the github markup tree
+"
 Class {
 	#name : #GHMRootBlock,
 	#superclass : #GHMAbstractBlock,

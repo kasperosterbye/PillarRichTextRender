@@ -1,3 +1,16 @@
+"
+I am an abstract class for the two kind of lists, ordered and unordered.
+
+I look like this:
+
+- bullet list item 1
+- bullet list item 2
+  - sublist item 2.1
+  - sublist item 2.2
+- bullet list item 3
+
+Indentation matters and is crusial
+"
 Class {
 	#name : #GHMListBlock,
 	#superclass : #GHMAbstractBlock,

@@ -1,3 +1,6 @@
+"
+I represent block markup, indicated by '> ' at the beginning of a line. 
+"
 Class {
 	#name : #GHMBlockTextBlock,
 	#superclass : #GHMAbstractBlock,

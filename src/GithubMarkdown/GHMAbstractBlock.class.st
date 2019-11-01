@@ -1,3 +1,12 @@
+"
+I am the abstract node for parsing full/multi-line aspects of github mark down.
+
+I have a set of children, and a up link to my parent.
+
+The root of the parsetree is an instance of GHMRootBlock.
+
+See the comment in GHMParser for an overview of the algorithm used in parsing github mark down.
+"
 Class {
 	#name : #GHMAbstractBlock,
 	#superclass : #Object,
@@ -13,7 +22,7 @@ GHMAbstractBlock >> addChild: childBlock [
 	children add: childBlock
 ]
 
-{ #category : #testing }
+{ #category : #public }
 GHMAbstractBlock >> addLine: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -22,7 +31,7 @@ GHMAbstractBlock >> addLine: line [
 	self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : #public }
 GHMAbstractBlock >> blockStarterFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
@@ -41,7 +50,7 @@ GHMAbstractBlock >> blockStarterFrom: line [
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : #public }
 GHMAbstractBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
@@ -53,17 +62,17 @@ GHMAbstractBlock >> children [
 	^children 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 GHMAbstractBlock >> closeMe [
 	Transcript << 'Closing ' << self class name; cr; endEntry
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 GHMAbstractBlock >> contents [
 	^''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 GHMAbstractBlock >> contents: indent [
 	| ind |
 	ind := String tab repeat: indent.
@@ -81,7 +90,7 @@ GHMAbstractBlock >> initialize [
 	children := OrderedCollection new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 GHMAbstractBlock >> newBlockFor: line parent: parentBlock [
 	| newBlockClass |
 	newBlockClass := self blockStarterFrom: line.

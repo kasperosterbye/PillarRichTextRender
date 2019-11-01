@@ -1,3 +1,11 @@
+"
+I am a header. I look like this:
+
+# level 1
+### level 3
+
+Deepest level is level 6
+"
 Class {
 	#name : #GHMHeaderBlock,
 	#superclass : #GHMAbstractBlock,
