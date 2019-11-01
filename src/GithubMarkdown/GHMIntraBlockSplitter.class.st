@@ -98,7 +98,7 @@ GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
 		end: start + 1 + text size - 1;
 		url: url;
 		next: next;
-		kind: #image
+		kind: #link
 ]
 
 { #category : #'private-matching' }
@@ -132,6 +132,12 @@ GHMIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
 		to: next
 		next: next +2
 		kind: #strike
+]
+
+{ #category : #'as yet unclassified' }
+GHMIntraBlockSplitter >> pillarFrom: aString [
+	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
+	^ (self splitString: aString) collect: [ :node | node asPillar ]
 ]
 
 { #category : #private }

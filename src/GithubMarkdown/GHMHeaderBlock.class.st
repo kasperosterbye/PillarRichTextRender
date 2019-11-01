@@ -26,6 +26,14 @@ GHMHeaderBlock >> addLine: line [
 	^ self
 ]
 
+{ #category : #converting }
+GHMHeaderBlock >> asPillar [
+	^ PRHeader new
+		level: self level;
+		setChildren: (self splitString: header);
+		yourself
+]
+
 { #category : #testing }
 GHMHeaderBlock >> canConsumeLine: line [
 	"return if this block can consume line"

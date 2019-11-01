@@ -47,6 +47,14 @@ GHMCodeBlock >> arguments: anObject [
 	^ arguments := anObject
 ]
 
+{ #category : #converting }
+GHMCodeBlock >> asPillar [
+	^ PRCodeblock new
+		language: self arguments;
+		text: self code;
+		yourself
+]
+
 { #category : #testing }
 GHMCodeBlock >> canCloseWith: line [
 	^ line beginsWith: '```'

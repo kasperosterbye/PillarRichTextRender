@@ -1,3 +1,6 @@
+"
+I represent an ordered list of list items
+"
 Class {
 	#name : #GHMOrderedListBlock,
 	#superclass : #GHMListBlock,
@@ -14,6 +17,14 @@ GHMOrderedListBlock >> addLine: line [
 
 	self startIndexFrom: line.
 	^ super addLine: line
+]
+
+{ #category : #converting }
+GHMOrderedListBlock >> asPillar [
+	^ PROrderedList new
+		setChildren: (self children collect: [ :child | child asPillar ]);
+		counter: self startIndex;
+		yourself
 ]
 
 { #category : #testing }

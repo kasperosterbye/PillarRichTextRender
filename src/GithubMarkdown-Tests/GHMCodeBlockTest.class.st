@@ -37,3 +37,20 @@ is really cool
 is really cool'.
 	self assert: code arguments equals: 'ArgumentGoesHere'
 ]
+
+{ #category : #tests }
+GHMCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
+	| source root code |
+	source := '```MyLanguage
+my fancy code
+is really cool
+````'.
+	root := GHMParser new parse: source.
+	code := root children first asPillar.
+	self
+		assert: code text
+		equals:
+			'my fancy code
+is really cool'.
+	self assert: code language originalName equals: 'MyLanguage'
+]

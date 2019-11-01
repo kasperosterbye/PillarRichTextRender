@@ -10,6 +10,14 @@ Class {
 	#category : #GithubMarkdown
 }
 
+{ #category : #converting }
+GHMInlineBlockWithUrl >> asPillar [
+	^(self class pillarNodeFromKind: self kind) new
+		setChildren: {(PRText new text: self literal)};
+		reference: self url;
+		yourself
+]
+
 { #category : #accessing }
 GHMInlineBlockWithUrl >> url [
 	^ url

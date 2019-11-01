@@ -27,6 +27,13 @@ GHMListItemBlock >> addLine: line [
 		ifFalse: [ text := text , String cr , normalized ]
 ]
 
+{ #category : #converting }
+GHMListItemBlock >> asPillar [
+	^ PRListItem new
+		setChildren: (self splitString: text), (self children collect: [:child| child asPillar]);
+		yourself
+]
+
 { #category : #testing }
 GHMListItemBlock >> canConsumeLine: line [
 	"return if this block can consume line"

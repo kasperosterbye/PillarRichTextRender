@@ -29,6 +29,13 @@ GHMParagraphBlock >> addLine: line [
 	^ self
 ]
 
+{ #category : #converting }
+GHMParagraphBlock >> asPillar [
+	^ PRParagraph  new
+		setChildren: (self splitString: text);
+		yourself
+]
+
 { #category : #private }
 GHMParagraphBlock >> asUnindented: line [
 	"return a line where the indentation to my indentation level has been removed"

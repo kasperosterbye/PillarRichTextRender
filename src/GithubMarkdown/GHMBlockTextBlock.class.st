@@ -22,6 +22,14 @@ GHMBlockTextBlock >> addLine: line [
 		ifNotNil: [ text , String cr , argText ]
 ]
 
+{ #category : #converting }
+GHMBlockTextBlock >> asPillar [
+	^ PREnvironment new
+		name: 'textBlock';
+		setChildren:  (self splitString: text);
+		yourself
+]
+
 { #category : #testing }
 GHMBlockTextBlock >> canConsumeLine: line [
 	"return if this block can consume line"

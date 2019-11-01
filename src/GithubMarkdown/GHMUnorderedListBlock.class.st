@@ -1,3 +1,6 @@
+"
+I represent an unordered list of list items
+"
 Class {
 	#name : #GHMUnorderedListBlock,
 	#superclass : #GHMListBlock,
@@ -9,6 +12,13 @@ GHMUnorderedListBlock >> addLine: line [
 	"Create a new item, and insert it into me."
 	"line is on the format '- item text'"
 	^ super addLine: line
+]
+
+{ #category : #converting }
+GHMUnorderedListBlock >> asPillar [
+	^ PRUnorderedList new
+		setChildren: (self children collect:[:child| child asPillar]);
+		yourself
 ]
 
 { #category : #testing }

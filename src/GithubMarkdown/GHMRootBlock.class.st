@@ -18,6 +18,13 @@ GHMRootBlock >> addLine: line [
 	^ newBlock 
 ]
 
+{ #category : #converting }
+GHMRootBlock >> asPillar [
+	^ PRDocument new
+		setChildren: (self children collect: [ :child | child asPillar ]);
+		yourself
+]
+
 { #category : #testing }
 GHMRootBlock >> canConsumeLine: line [
 	"return if this block can consume line"

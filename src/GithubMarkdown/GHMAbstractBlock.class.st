@@ -110,3 +110,9 @@ GHMAbstractBlock >> parent: aBlock [
 	parent := aBlock.
 	aBlock addChild: self
 ]
+
+{ #category : #public }
+GHMAbstractBlock >> splitString: aString [
+	"convenience method"
+	^GHMIntraBlockSplitter new pillarFrom: aString.
+]
