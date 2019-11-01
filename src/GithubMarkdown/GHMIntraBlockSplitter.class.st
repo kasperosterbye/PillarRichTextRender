@@ -85,12 +85,12 @@ GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
 	"link annotation [AltText](url)"
 
 	| regex text url next |
-	regex := RxMatcher forString: '\[(.*)\]\((.*)\)'.
+	regex := RxMatcher forString: '\[(.*)\](\((.*)\))?'.
 	regex matches: (aString copyFrom: start to: aString size).
 	regex lastResult
 		ifFalse: [ ^ nil ].
 	text := regex subexpression: 2.
-	url := regex subexpression: 3.
+	url := (regex subexpression: 3) ifNotNil: [ :u | u ] ifNil: [ text ].
 	next := start + (regex subexpression: 1) size.
 	^ GHMInlineBlockWithUrl new
 		string: aString;

@@ -61,7 +61,7 @@ IntraBlockSplitterTest >> testSplitBlockImage [
 
 { #category : #tests }
 IntraBlockSplitterTest >> testSplitBlockLink [
-	"Test the image annotation [LinkText](url)"
+	"Test the link annotation [LinkText](url)"
 
 	| res |
 	res := GHMIntraBlockSplitter new
@@ -70,6 +70,19 @@ IntraBlockSplitterTest >> testSplitBlockLink [
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[LinkText]' . 'last'}.
 	self assert: res second url equals: 'myURL'
+]
+
+{ #category : #tests }
+IntraBlockSplitterTest >> testSplitBlockLinkIncomplete [
+	"Test the annotation [LinkText] -> should return a link with url as linktext"
+
+	| res |
+	res := GHMIntraBlockSplitter new
+		splitString: 'abc[LinkText]last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[LinkText]' . 'last'}.
+	self assert: res second url equals: 'LinkText'
 ]
 
 { #category : #tests }
