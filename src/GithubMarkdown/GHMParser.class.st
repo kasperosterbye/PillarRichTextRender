@@ -29,6 +29,11 @@ GHMParser class >> allBlockNodeClasses [
 		reject: [ :cl | cl category = self category ] 
 ]
 
+{ #category : #converting }
+GHMParser class >> asRichText: aString [
+	^PRRichTextComposer new start: (GHMParser new parse: aString) asPillar
+]
+
 { #category : #parsing }
 GHMParser >> handleErrorInLine: line [
 	"This implementation is temporary.
