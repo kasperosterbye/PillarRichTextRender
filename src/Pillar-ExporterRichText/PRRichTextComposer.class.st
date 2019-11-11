@@ -314,8 +314,8 @@ PRRichTextComposer >> visitListItem: anItem [
 	| bullet |
 	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
 	bullet := (anItem propertyAt: #kind) = #ordered
-		ifTrue: [ (anItem propertyAt: #counter) asString asText , Character tab ]
-		ifFalse: [ (anItem propertyAt: #bullet) asText , Character tab ].
+		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
+		ifFalse: [ (anItem propertyAt: #bullet) asText , String tab ].
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
 	canvas cr.
 	canvas << bullet.
