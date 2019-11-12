@@ -31,6 +31,16 @@ DocumenterProjectNode >> children [
 	^packages
 ]
 
+{ #category : #'as yet unclassified' }
+DocumenterProjectNode >> docString [
+	^'There is currently no documentation in project nodes'
+]
+
+{ #category : #'as yet unclassified' }
+DocumenterProjectNode >> docString: newString [
+	"There is currently no documentation in project nodes - ignore"
+]
+
 { #category : #accessing }
 DocumenterProjectNode >> name [
 	^prefix

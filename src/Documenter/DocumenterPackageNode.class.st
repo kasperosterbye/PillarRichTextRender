@@ -27,6 +27,23 @@ DocumenterPackageNode >> children [
 	^ package package classes asOrderedCollection collect: [ :cl | DocumenterClassNode on: cl ]
 ]
 
+{ #category : #'as yet unclassified' }
+DocumenterPackageNode >> docString [
+	"logic is stolen from ClyPackageCommentEditorToolMorph>>editingText.
+	At some point it should be moved into RPackage to avoid code duplication"
+	^ package packageManifestOrNil 
+		ifNil: [ 'Please comment package here' "ClyPackageCommentEditorToolMorph>>packageCommentBlank" ]
+		ifNotNil: [ :manifest | 
+			manifest hasComment 
+				ifTrue: [ manifest comment ] 
+				ifFalse: [ self packageCommentBlank ] ]
+]
+
+{ #category : #'as yet unclassified' }
+DocumenterPackageNode >> docString: newString [
+	package packageManifest comment: newString stamp: Author changeStamp.
+]
+
 { #category : #accessing }
 DocumenterPackageNode >> name [
 	^package name

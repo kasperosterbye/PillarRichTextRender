@@ -8,3 +8,13 @@ Class {
 DocumenterNode >> children [
 	self subclassResponsibility 
 ]
+
+{ #category : #'as yet unclassified' }
+DocumenterNode >> docString [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+DocumenterNode >> docString: newString [
+	self subclassResponsibility 
+]

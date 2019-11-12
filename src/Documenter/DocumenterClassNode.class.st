@@ -17,6 +17,16 @@ DocumenterClassNode >> children [
 	^#()
 ]
 
+{ #category : #'as yet unclassified' }
+DocumenterClassNode >> docString [
+	^ class comment
+]
+
+{ #category : #'as yet unclassified' }
+DocumenterClassNode >> docString: newString [
+	class comment: newString
+]
+
 { #category : #'instance creation' }
 DocumenterClassNode >> forClass: aClass [
 	class := aClass 

@@ -14,12 +14,12 @@ Class {
 { #category : #examples }
 PillarTextPresenter class >> example [
 	<example>
-	self onSource: self sampleSource.
+	(self onSource: self sampleSource) openWithSpec .
 ]
 
 { #category : #'instance creation' }
 PillarTextPresenter class >> onSource: aString [
-	self new source: aString; openWithSpec
+	^self new source: aString;yourself 
 ]
 
 { #category : #examples }
@@ -68,7 +68,10 @@ PillarTextPresenter >> source [
 
 { #category : #accessing }
 PillarTextPresenter >> source: aText [
-	source := aText asString
+	source := aText asString.
+	self text: self asRenderedText.
+	isRendering := true.
+	self disable
 ]
 
 { #category : #'as yet unclassified' }
