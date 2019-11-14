@@ -45,6 +45,12 @@ Pillar supports lists:
 '
 ]
 
+{ #category : #'api-events' }
+PillarTextPresenter >> announceDisplayed [
+	"I am not sure this is the right way to set the initial color of the presenter, but it works."
+	self color: self renderColor 
+]
+
 { #category : #accessing }
 PillarTextPresenter >> asRenderedText [
 	^ PRRichTextComposer new
@@ -54,10 +60,20 @@ PillarTextPresenter >> asRenderedText [
 				parse: source)
 ]
 
+{ #category : #'as yet unclassified' }
+PillarTextPresenter >> defaultColor [
+	isRendering ifNil: [ ^ self renderColor  ].
+	isRendering 
+		ifTrue: [ ^self renderColor  ]
+		ifFalse: [ ^ super defaultColor  ].
+	
+]
+
 { #category : #initialization }
 PillarTextPresenter >> initialize [
 	super initialize.
 	isRendering := true.
+	self color: self renderColor .
 	self disable.
 	self
 		bindKeyCombination: $e command
@@ -66,6 +82,19 @@ PillarTextPresenter >> initialize [
 		acceptBlock: [ :src | 
 			self switchToRenderMode.
 			false ]
+]
+
+{ #category : #showing }
+PillarTextPresenter >> openWithSpec [
+	super openWithSpec .
+	"self color: self renderColor "
+]
+
+{ #category : #'as yet unclassified' }
+PillarTextPresenter >> renderColor [
+	super defaultColor lightness < 0.5
+		ifTrue: [ ^self color: super defaultColor lighter lighter ]
+		ifFalse: [ ^self color: super defaultColor darker ]
 ]
 
 { #category : #accessing }
@@ -82,6 +111,7 @@ PillarTextPresenter >> source: aText [
 PillarTextPresenter >> switchToEditMode [
 	self enable.
 	isRendering := false.
+	self color: (super defaultColor ).
 	self text: source asString
 ]
 
@@ -90,6 +120,7 @@ PillarTextPresenter >> switchToRenderMode [
 	self source: self pendingText.
 	self text: self asRenderedText.
 	isRendering := true.
+	self color: (self renderColor ).
 	self disable
 ]
 
