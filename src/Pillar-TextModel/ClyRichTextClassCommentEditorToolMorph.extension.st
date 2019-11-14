@@ -1,7 +1,7 @@
-Extension { #name : #ClyClassCommentEditorToolMorph }
+Extension { #name : #ClyRichTextClassCommentEditorToolMorph }
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> asRenderedText [
+ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
 	^ PRRichTextComposer new
 		start:
 			(PRPillarParserMain
@@ -10,7 +10,7 @@ ClyClassCommentEditorToolMorph >> asRenderedText [
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> changesAccepted [
+ClyRichTextClassCommentEditorToolMorph >> changesAccepted [
 	| res |
 	res := super changesAccepted.
 	self switchToRenderMode.
@@ -18,22 +18,17 @@ ClyClassCommentEditorToolMorph >> changesAccepted [
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> disable [
+ClyRichTextClassCommentEditorToolMorph >> disable [
 	textMorph enabled: false
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> editingText [
-	^ editingClass comment
-]
-
-{ #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> enable [
+ClyRichTextClassCommentEditorToolMorph >> enable [
 	textMorph enabled: true
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> setUpModelFromContext [
+ClyRichTextClassCommentEditorToolMorph >> setUpModelFromContext [
 	"I am being used as a kind of late initialization method"
 	isRendering := true.
 	self bindKeyCombination: $r command toAction: [ self toggleMode ].
@@ -41,14 +36,14 @@ ClyClassCommentEditorToolMorph >> setUpModelFromContext [
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> switchToEditMode [
+ClyRichTextClassCommentEditorToolMorph >> switchToEditMode [
 	isRendering := false.
 	self enable.
 	self triggerUpdate
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> switchToRenderMode [
+ClyRichTextClassCommentEditorToolMorph >> switchToRenderMode [
 	self hasUnacceptedEdits
 		ifTrue: [ ^ self ].
 	isRendering := true.
@@ -57,7 +52,7 @@ ClyClassCommentEditorToolMorph >> switchToRenderMode [
 ]
 
 { #category : #'*Pillar-TextModel' }
-ClyClassCommentEditorToolMorph >> toggleMode [
+ClyRichTextClassCommentEditorToolMorph >> toggleMode [
 	isRendering
 		ifTrue: [ self switchToEditMode ]
 		ifFalse: [ self switchToRenderMode ].
