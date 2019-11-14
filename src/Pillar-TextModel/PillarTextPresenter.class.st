@@ -14,7 +14,7 @@ Class {
 { #category : #examples }
 PillarTextPresenter class >> example [
 	<example>
-	self onSource: self sampleSource.
+	(self onSource: self sampleSource) openWithSpec
 ]
 
 { #category : #'as yet unclassified' }
@@ -26,7 +26,7 @@ PillarTextPresenter class >> guestimateIsPillar: aSource [
 
 { #category : #'instance creation' }
 PillarTextPresenter class >> onSource: aString [
-	self new source: aString; openWithSpec
+	^self new source: aString
 ]
 
 { #category : #examples }
