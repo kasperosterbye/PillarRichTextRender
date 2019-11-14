@@ -8,7 +8,7 @@ Class {
 		'source',
 		'isRendering'
 	],
-	#category : #'Pillar-TextModel'
+	#category : #'Pillar-TextPresenter'
 }
 
 { #category : #examples }
