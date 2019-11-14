@@ -17,6 +17,13 @@ PillarTextPresenter class >> example [
 	self onSource: self sampleSource.
 ]
 
+{ #category : #'as yet unclassified' }
+PillarTextPresenter class >> guestimateIsPillar: aSource [
+	"Check to see if some of the more unusual sequences from pillar is inside aSource."
+	"Take care of using '#' in the beginning of the line, as there are many comments which starts with a symbol, #foo is bla bla"
+	^aSource matchesRegex: '.*(""|^!|^#.*$^#|\[\[\[).*'
+]
+
 { #category : #'instance creation' }
 PillarTextPresenter class >> onSource: aString [
 	self new source: aString; openWithSpec
