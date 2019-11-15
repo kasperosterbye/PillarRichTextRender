@@ -93,8 +93,8 @@ PillarTextPresenter >> openWithSpec [
 { #category : #'as yet unclassified' }
 PillarTextPresenter >> renderColor [
 	super defaultColor lightness < 0.5
-		ifTrue: [ ^self color: super defaultColor lighter lighter ]
-		ifFalse: [ ^self color: super defaultColor darker ]
+		ifTrue: [ ^super defaultColor lighter lighter ]
+		ifFalse: [ ^super defaultColor darker ]
 ]
 
 { #category : #accessing }
