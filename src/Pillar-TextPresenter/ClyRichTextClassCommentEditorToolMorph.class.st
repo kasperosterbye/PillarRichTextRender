@@ -26,7 +26,7 @@ ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
 		start:
 			(PRPillarParserMain
 				initialize;
-				parse: editingClass comment)
+				parse: super editingText )
 ]
 
 { #category : #building }
@@ -44,15 +44,6 @@ ClyRichTextClassCommentEditorToolMorph >> changesAccepted [
 	^res
 ]
 
-{ #category : #initialization }
-ClyRichTextClassCommentEditorToolMorph >> defaultColor [
-	isRendering ifNil: [ ^ self renderColor  ].
-	isRendering 
-		ifTrue: [ ^self renderColor  ]
-		ifFalse: [ ^ super defaultColor  ].
-	
-]
-
 { #category : #'as yet unclassified' }
 ClyRichTextClassCommentEditorToolMorph >> disable [
 	textMorph enabled: false
@@ -60,10 +51,7 @@ ClyRichTextClassCommentEditorToolMorph >> disable [
 
 { #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> editColor [
-	"super defaultColor lightness < 0.5
-		ifTrue: [ ^super defaultColor lighter lighter ]
-		ifFalse: [ ^super defaultColor darker ]"
-		^Color white
+	^self theme backgroundColor 
 ]
 
 { #category : #'as yet unclassified' }
@@ -78,12 +66,18 @@ ClyRichTextClassCommentEditorToolMorph >> enable [
 	textMorph enabled: true
 ]
 
+{ #category : #'as yet unclassified' }
+ClyRichTextClassCommentEditorToolMorph >> initialize [
+	super initialize.
+	isRendering := true.
+
+]
+
 { #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> renderColor [
-	"super defaultColor lightness < 0.5
-		ifTrue: [ ^super defaultColor lighter lighter ]
-		ifFalse: [ ^super defaultColor darker ]"
-		^Color veryLightGray lighter lighter 
+	self theme backgroundColor lightness < 0.5
+		ifTrue: [ ^ self theme backgroundColor lighter ]
+		ifFalse: [ ^self theme backgroundColor darker ]
 ]
 
 { #category : #initialization }
@@ -91,15 +85,6 @@ ClyRichTextClassCommentEditorToolMorph >> setBackgroundColor: aColor [
 	"Convenience method to set my background color"
 	textMorph color: aColor
 	
-]
-
-{ #category : #'as yet unclassified' }
-ClyRichTextClassCommentEditorToolMorph >> setUpModelFromContext [
-	"I am being used as a kind of late initialization method"
-	isRendering := true.
-	"self color: self renderColor.
-	self bindKeyCombination: $r command toAction: [ self toggleMode ]."
-	super setUpModelFromContext
 ]
 
 { #category : #'as yet unclassified' }
