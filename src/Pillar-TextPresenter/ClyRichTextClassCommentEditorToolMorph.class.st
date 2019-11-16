@@ -22,11 +22,7 @@ ClyRichTextClassCommentEditorToolMorph class >> classTabActivation [
 
 { #category : #'as yet unclassified' }
 ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
-	^ PRRichTextComposer new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse: super editingText )
+	^ PRRichTextComposer renderComment:  super editingText
 ]
 
 { #category : #building }

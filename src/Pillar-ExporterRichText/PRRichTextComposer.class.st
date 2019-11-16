@@ -99,6 +99,16 @@ this is just ""first"" line
 and this is the second line') inspect
 ]
 
+{ #category : #'as yet unclassified' }
+PRRichTextComposer class >> renderComment: aSource [
+	"render aSource if it looks like it contains pillar. Otherwise just return aSource"
+	"Check to see if some of the more unusual sequences from pillar is inside aSource."
+	"Take care of using '#' in the beginning of the line, as there are comments which starts with a symbol, #foo is bla bla".
+	^(aSource matchesRegex: '.*(""|^!|^# |^\[\[\[).*') 
+				ifTrue: [ self asText: aSource ] 
+				ifFalse: [ aSource ]
+]
+
 { #category : #private }
 PRRichTextComposer >> browse: urlString [
 	"I am a url on the form: browse://Class or browse://Class/method"

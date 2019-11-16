@@ -22,11 +22,7 @@ ClyPackageRichTextCommentEditorToolMorph class >> browserTabActivation2 [
 
 { #category : #converting }
 ClyPackageRichTextCommentEditorToolMorph >> asRenderedText [
-	^ PRRichTextComposer new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse: super editingText )
+	^ PRRichTextComposer renderComment:  super editingText
 ]
 
 { #category : #rendering }
