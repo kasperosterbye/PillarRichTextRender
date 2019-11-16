@@ -38,7 +38,7 @@ Once loaded, the class `PRRichTextComposer` has some examples on the class side.
 ```Smalltalk
 Metacello new
 	baseline: 'PillarImageTools';
-	repository: 'github:///kasperosterbye/PillarRichTextRender';
+	repository: 'github://kasperosterbye/PillarRichTextRender';
 	load	
 ```
 
