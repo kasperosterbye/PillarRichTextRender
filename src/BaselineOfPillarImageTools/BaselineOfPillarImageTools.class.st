@@ -17,7 +17,7 @@ BaselineOfPillarImageTools >> baseline: spec [
 			spec
 				baseline: 'PillarCore'
 					with: [ spec repository:
-						'github://pillar-markup/pillar:0669ec63e1d2105136c3dddd1e499f6284f2fd51' ];
+						'github://pillar-markup/pillar:dev-7' ];
 				package: 'Pillar-ExporterRichText';
 				package: 'Pillar-TextPresenter' ]
 ]
