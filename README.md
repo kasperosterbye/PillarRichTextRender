@@ -1,7 +1,11 @@
 # PillarRichTextRender
 Rendering the Pillar markup inside the Pharo image
 
-This is work in (early) progress, but I think it is far enough for a "technology preview".
+This is work in (early) progress, but I think it is far enough for a "technology preview". 
+
+> It currently only works for **Pharo 8**.
+
+The notion of *Rich Text* is simply the Pharo class `Text` as opposed to `String`.
 
 ### Goal of the project
 The goal of the project is to be able to do better in-image documentation. To do this, I am working on several fronts:
@@ -45,3 +49,9 @@ Metacello new
 Once loaded the class comments and package comments will be rendered in pillar. Most comments are not in pillar. It tries to guess if the comment is pillar or plain text (by looking for a few key markdowns). 
 
 At the moment you cannot edit the rendered text directly, but pressing `meta-r` (also known as `command-r`) will toggle between rendered and source mode. In source mode you can edit the source. Accepting the changes reverts back to rendered mode.
+
+### Github markdown
+
+In addition to rendering pillar, there is a tool which can render a subset of github markdown (no tables, and a few other issues). You can try the example in `GHMParser class>>example`.
+
+The rendering is done by parsing the github markdown and building a pillar document tree. This tree is then rendered using the pillar rich text rendering.
