@@ -220,9 +220,16 @@ PRRichTextComposer >> visitCitationAnnotation: aCitation [
 PRRichTextComposer >> visitCodeblock: aCodeBlock [
 	canvas newLineIfNotAlready .
 	canvas
-		indentIn: [ canvas
-				includeAttribute: (TextColor color: (Color fromHexString: '008822'))
-				in: [ self visitText: aCodeBlock ] ].
+		indentIn: [ 
+			(#('' 'Smalltalk') includes: aCodeBlock language originalName)
+				ifTrue: [ canvas << (SHRBTextStyler new 
+								isForWorkspace: true; 
+								styledTextFor: aCodeBlock text asText) ] 
+				ifFalse: [ 
+					canvas
+						includeAttribute: (TextColor color: (Color fromHexString: '008822'))
+						in: [ self visitText: aCodeBlock ] ]
+			].
 	canvas cr.
 ]
 
