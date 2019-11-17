@@ -39,8 +39,8 @@ GHMAbstractBlock >> blockStarterFrom: line [
 		ifTrue: [ ^ GHMHeaderBlock ].
 	(line beginsWith: '```')
 		ifTrue: [ ^ GHMCodeBlock ].
-	(line beginsWith: '-') | (line beginsWith: '*')
-		| (line beginsWith: '+')
+	(line beginsWith: '- ') | (line beginsWith: '* ')
+		| (line beginsWith: '+ ')
 		ifTrue: [ ^ GHMUnorderedListBlock ].
 	(line prefixMatchesRegex: '\d+(\.|\))')
 		ifTrue: [ ^ GHMOrderedListBlock ].	"number followed by . or )"

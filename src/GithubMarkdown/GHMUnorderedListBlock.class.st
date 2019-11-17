@@ -24,5 +24,5 @@ GHMUnorderedListBlock >> asPillar [
 { #category : #testing }
 GHMUnorderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
-	^ (super canConsumeLine: line) and: ['+-*' includes: (line trim at: 1)]
+	^ (super canConsumeLine: line) and: [line trim matchesRegex: '(^\* |^- | ^\+).*']
 ]

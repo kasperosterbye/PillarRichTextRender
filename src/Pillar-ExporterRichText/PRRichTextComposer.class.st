@@ -221,7 +221,8 @@ PRRichTextComposer >> visitCodeblock: aCodeBlock [
 	canvas
 		indentIn: [ canvas
 				includeAttribute: TextEmphasis italic
-				in: [ self visitText: aCodeBlock ] ]
+				in: [ self visitText: aCodeBlock ] ].
+	canvas cr.
 ]
 
 { #category : #visiting }
@@ -308,6 +309,7 @@ PRRichTextComposer >> visitFigure: aFigure [
 
 { #category : #visiting }
 PRRichTextComposer >> visitHeader: aHeader [
+	canvas cr.
 	canvas
 		includeAttribute: (self headerLevelFont: aHeader level)
 		in: [ self visitDocumentGroup: aHeader ].
@@ -329,7 +331,8 @@ PRRichTextComposer >> visitListItem: anItem [
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
 	canvas cr.
 	canvas << bullet.
-	self visitDocumentGroup: anItem
+	self visitDocumentGroup: anItem.
+	canvas cr.
 ]
 
 { #category : #visiting }
@@ -353,6 +356,12 @@ PRRichTextComposer >> visitOrderedList: anObject [
 				put: (self counterFor: counter atLevel: canvas nesting-1).
 			counter := counter + 1 ].
 	super visitOrderedList: anObject]
+]
+
+{ #category : #'visiting-document' }
+PRRichTextComposer >> visitParagraph: anObject [
+	canvas cr.
+	super visitParagraph: anObject.
 ]
 
 { #category : #visiting }
