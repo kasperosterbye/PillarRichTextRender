@@ -34,6 +34,16 @@ GHMParser class >> asRichText: aString [
 	^PRRichTextComposer new start: (GHMParser new parse: aString) asPillar
 ]
 
+{ #category : #'instance creation' }
+GHMParser class >> fromUrl: aUrl [
+	
+	^self asRichText:   
+		(ZnClient new 
+			beOneShot;
+			get: aUrl;
+			entity) string.
+]
+
 { #category : #parsing }
 GHMParser >> handleErrorInLine: line [
 	"This implementation is temporary.

@@ -53,7 +53,7 @@ GHMIntraBlockSplitter >> matchImageIn: aString at: start [
 	"image annotation ![AltText](url)"
 
 	| regex text url next |
-	regex := RxMatcher forString: '!\[(.*)\]\((.*)\)'.
+	regex := RxMatcher forString: '!\[([^]]*)\]\(([^)]*)\)'.
 	regex matches: (aString copyFrom: start to: aString size).
 	regex lastResult ifFalse: [ ^nil ].
 	text := regex subexpression: 2.
@@ -84,14 +84,24 @@ GHMIntraBlockSplitter >> matchItalicsIn: aString at: start [
 GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
 	"link annotation [AltText](url)"
 
-	| regex text url next |
-	regex := RxMatcher forString: '\[(.*)\](\(([^)]*)\))?'.
-	regex matches: (aString copyFrom: start to: aString size).
-	regex lastResult
-		ifFalse: [ ^ nil ].
-	text := regex subexpression: 2.
-	url := (regex subexpression: 4) ifNotNil: [ :u | u ] ifNil: [ text ].
-	next := start + (regex subexpression: 1) size.
+	| index count c text url next regex |
+	count := 1.
+	index := start.
+	"Move past inner [] (typically from an image)"
+	[ (count > 0) & (index <= aString size) ] whileTrue: [ 
+		index := index +1.
+		c := aString at: index.
+		c = $[ ifTrue: [count := count +1].
+		c = $] ifTrue: [count := count -1]].
+	index > aString size ifTrue: [ ^nil ].
+	text := aString copyFrom: start +1 to: index -1 .
+	"now look to see if there is a url "
+	regex := RxMatcher forString: '(\(([^)]*)\))?'.
+	regex matches: (aString copyFrom: index +1 to: aString size).
+	url := regex lastResult 
+		ifTrue:[regex subexpression: 3]
+		ifFalse: [ text ].
+	next := index+1 + (regex subexpression: 2) size.
 	^ GHMInlineBlockWithUrl new
 		string: aString;
 		start: start + 1;
@@ -132,6 +142,27 @@ GHMIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
 		to: next
 		next: next +2
 		kind: #strike
+]
+
+{ #category : #'private-matching' }
+GHMIntraBlockSplitter >> old_matchLinkIn: aString at: start [
+	"link annotation [AltText](url)"
+
+	| regex text url next |
+	regex := RxMatcher forString: '\[([^[]]*|(.*\[(.*)\]).*)\](\(([^)]*)\))?'.
+	regex matches: (aString copyFrom: start to: aString size).
+	regex lastResult
+		ifFalse: [ ^ nil ].
+	text := regex subexpression: 2.
+	url := (regex subexpression: 4) ifNotNil: [ :u | u ] ifNil: [ text ].
+	next := start + (regex subexpression: 1) size.
+	^ GHMInlineBlockWithUrl new
+		string: aString;
+		start: start + 1;
+		end: start + 1 + text size - 1;
+		url: url;
+		next: next;
+		kind: #link
 ]
 
 { #category : #'as yet unclassified' }

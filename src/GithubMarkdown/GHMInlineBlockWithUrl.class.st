@@ -13,7 +13,7 @@ Class {
 { #category : #converting }
 GHMInlineBlockWithUrl >> asPillar [
 	^(self class pillarNodeFromKind: self kind) new
-		setChildren: {(PRText new text: self literal)};
+		setChildren: ( (GHMIntraBlockSplitter new splitString: self literal) collect: [:n | n asPillar]);
 		reference: self url;
 		yourself
 ]

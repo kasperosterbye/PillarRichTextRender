@@ -15,7 +15,8 @@ Class {
 	#instVars : [
 		'out',
 		'brushes',
-		'nesting'
+		'nesting',
+		'crAtEnd'
 	],
 	#category : #'Pillar-ExporterRichText'
 }
@@ -24,6 +25,7 @@ Class {
 PRRichTextCanvas >> << aText [
 	brushes do: [ :brush | brush paint: aText ].
 	out << aText.
+	aText ifNotEmpty: [crAtEnd := aText last = Character cr].
 ]
 
 { #category : #public }
@@ -33,7 +35,8 @@ PRRichTextCanvas >> contents [
 
 { #category : #public }
 PRRichTextCanvas >> cr [
-	self << String cr asText
+	self << String cr asText.
+	crAtEnd := true.
 ]
 
 { #category : #public }
@@ -64,10 +67,18 @@ PRRichTextCanvas >> initialize [
 	out := WriteStream on: '' asText.
 	brushes := OrderedCollection
 		with: (PRRichTextIndentBrush on: self).
-	nesting := 0
+	nesting := 0.
+	crAtEnd := true. "Prevent newlines in beginning"
 ]
 
 { #category : #accessing }
 PRRichTextCanvas >> nesting [
 	^ nesting
+]
+
+{ #category : #public }
+PRRichTextCanvas >> newLineIfNotAlready [
+	crAtEnd 
+		ifFalse: [self << String cr asText].
+	crAtEnd := true.
 ]

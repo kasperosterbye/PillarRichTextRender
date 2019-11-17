@@ -20,6 +20,43 @@ PRRichTextComposer class >> asText: aStreamOrString [
 				parse: aStreamOrString asString)
 ]
 
+{ #category : #private }
+PRRichTextComposer class >> browse: urlString [
+	"I am a url on the form: browse://Class or browse://Class/method"
+
+	| parts class method |
+	parts := urlString substrings: '/'.
+	class := parts at: 2.
+	method := parts size > 2
+		ifTrue: [ (parts at: 3) asSymbol ]
+		ifFalse: [ nil ].
+	method
+		ifNil: [ class asClass browse ]
+		ifNotNil: [ (class asClass >> method) browse ]
+]
+
+{ #category : #private }
+PRRichTextComposer class >> bulletForLevel: level [
+	| kind |
+	kind := level % 2.
+	kind = 0
+		ifTrue: [ ^ $• asText ].
+	kind = 1
+		ifTrue: [ ^ $- asText ]
+]
+
+{ #category : #private }
+PRRichTextComposer class >> counterFor: counter atLevel: level [
+	| kind |
+	kind := level % 3.
+	kind = 0
+		ifTrue: [ ^ counter asString asText , '.' ].
+	kind = 1
+		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
+	kind = 2
+		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
+]
+
 { #category : #examples }
 PRRichTextComposer class >> example1 [
 	<example>
@@ -99,55 +136,8 @@ this is just ""first"" line
 and this is the second line') inspect
 ]
 
-{ #category : #'as yet unclassified' }
-PRRichTextComposer class >> renderComment: aSource [
-	"render aSource if it looks like it contains pillar. Otherwise just return aSource"
-	"Check to see if some of the more unusual sequences from pillar is inside aSource."
-	"Take care of using '#' in the beginning of the line, as there are comments which starts with a symbol, #foo is bla bla".
-	^(aSource matchesRegex: '.*(""|^!|^# |^\[\[\[).*') 
-				ifTrue: [ self asText: aSource ] 
-				ifFalse: [ aSource ]
-]
-
 { #category : #private }
-PRRichTextComposer >> browse: urlString [
-	"I am a url on the form: browse://Class or browse://Class/method"
-
-	| parts class method |
-	parts := urlString substrings: '/'.
-	class := parts at: 2.
-	method := parts size > 2
-		ifTrue: [ (parts at: 3) asSymbol ]
-		ifFalse: [ nil ].
-	method
-		ifNil: [ class asClass browse ]
-		ifNotNil: [ (class asClass >> method) browse ]
-]
-
-{ #category : #private }
-PRRichTextComposer >> bulletForLevel: level [
-	| kind |
-	kind := level % 2.
-	kind = 0
-		ifTrue: [ ^ $• asText ].
-	kind = 1
-		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #private }
-PRRichTextComposer >> counterFor: counter atLevel: level [
-	| kind |
-	kind := level % 3.
-	kind = 0
-		ifTrue: [ ^ counter asString asText , '.' ].
-	kind = 1
-		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
-	kind = 2
-		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
-]
-
-{ #category : #private }
-PRRichTextComposer >> headerLevelFont: level [
+PRRichTextComposer class >> headerLevelFont: level [
 	"I return a font annotation to be used with Attributes"
 
 	"StrikeFont actualFamilyNames an OrderedCollection(#'Bitmap DejaVu Sans' #'Bitmap Source Code Pro' #'Bitmap Source Sans Pro')"
@@ -159,6 +149,16 @@ PRRichTextComposer >> headerLevelFont: level [
 			(StrikeFont
 				familyName: 'Bitmap Source Sans Pro'
 				pointSize: (fontSizes at: level))
+]
+
+{ #category : #converting }
+PRRichTextComposer class >> renderComment: aSource [
+	"render aSource if it looks like it contains pillar. Otherwise just return aSource"
+	"Check to see if some of the more unusual sequences from pillar is inside aSource."
+	"Take care of using '#' in the beginning of the line, as there are comments which starts with a symbol, #foo is bla bla".
+	^(aSource matchesRegex: '.*(""|^!|^# |^\[\[\[).*') 
+				ifTrue: [ self asText: aSource ] 
+				ifFalse: [ aSource ]
 ]
 
 { #category : #visiting }
@@ -173,155 +173,169 @@ PRRichTextComposer >> visit: anObject [
 	anObject accept: self
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitAnchor: anObject [
 	canvas << '>>> Anchors not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitAnnotatedParagraph: aDocument [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	canvas includeAttribute: (TextAlignment rightFlush) in: 
 		[canvas includeAttribute: (TextColor blue) in:
 			[self visitParagraph: aDocument]].
 	canvas cr.
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-annotations' }
 PRRichTextComposer >> visitAnnotation: anAnnotation [
 	canvas << '>>> Annotations not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-annotations' }
 PRRichTextComposer >> visitBeginEnvironmentAnnotation: aBeginEnvironmentAnnotation [
 
 	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitBoldFormat: anObject [
-	canvas includeAttribute: TextEmphasis bold in: [
-	self visitFormat: anObject].
+	canvas 
+		includeAttribute: TextEmphasis bold 
+		in: [self visitFormat: anObject].
 	
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitCitation: aCitation [
 	canvas << '>>> Citations not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitCitationAnnotation: aCitation [
 	canvas << '>>> Citations not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitCodeblock: aCodeBlock [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	canvas
 		indentIn: [ canvas
-				includeAttribute: TextEmphasis italic
+				includeAttribute: (TextColor color: (Color fromHexString: '008822'))
 				in: [ self visitText: aCodeBlock ] ].
 	canvas cr.
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitColumn: aColumn [
 	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitColumnAnnotation: aColumnAnnotation [
 	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitColumns: aColumns [
 	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitColumnsAnnotation: aColumnsAnnotation [
 	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitDataItem: anItem [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	self visitDocumentGroup: anItem.
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitDefinitionList: anObject [
 	canvas indentIn: [ self visitUnorderedList: anObject ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitDocListAnnotation: aPRDocListAnnotation [
 	canvas << '>>> DocLists not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitEmptyParagraph: anObject [
 	canvas cr
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitEndColumnsAnnotation: aEndColumnsAnnotation [
 	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitEndEnvironmentAnnotation: aEndEnvironmentAnnotation [
 	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitEnvironment: anObject [
-	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
+	anObject name = 'textBlock'
+		ifTrue:[
+			canvas indentIn: [  
+				canvas 
+					includeAttribute: TextEmphasis italic  
+					in: [self visitFormat: anObject]]
+		]
+		ifFalse: 
+		[canvas << ('>>> Environment ' , (anObject name) , 
+						'is not supported in RichText Pillar <<<') asText]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitExternalLink: aLink [
 	| attribute target url |
 	target := aLink reference.
 	url := target asUrl.
 	attribute := nil.
-	url scheme = #http
-		ifTrue: [ attribute := PRExternalLinkTextAction url: target ].
+	(#(http https) includes: url scheme )
+		ifTrue: [ attribute := "PRExternalLinkTextAction url: target"
+			 	TextAction new actOnClickBlock: [WebBrowser openOn: target]].
 	url scheme = #browse
 		ifTrue:
-			[ attribute := TextAction new actOnClickBlock: [ self browse: target ] ].
+			[ attribute := TextAction new actOnClickBlock: [ self class browse: target ] ].
 	attribute
 		ifNotNil:
 			[ canvas includeAttribute: attribute in: [ self visitLink: aLink ] ]
 		ifNil: [ self visitLink: aLink ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitFigure: aFigure [
 	| serverUrl anchoredImage |
 	serverUrl := aFigure reference.
-	anchoredImage := (String value: 1) asText
+	"Try to read a png file (only one supported right now), else use alt text"
+	[anchoredImage := (String value: 1) asText
 		addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: serverUrl)).
-	canvas << anchoredImage 
+		canvas << anchoredImage ] 
+		on: Exception 
+		do: [self visitAll: aFigure children].
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitHeader: aHeader [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	canvas
-		includeAttribute: (self headerLevelFont: aHeader level)
+		includeAttribute: (self class headerLevelFont: aHeader level)
 		in: [ self visitDocumentGroup: aHeader ].
 	canvas cr
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitItalicFormat: anObject [
 	canvas includeAttribute: TextEmphasis italic in: [ self visitFormat: anObject]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitListItem: anItem [
 	| bullet |
 	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
@@ -329,13 +343,13 @@ PRRichTextComposer >> visitListItem: anItem [
 		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
 		ifFalse: [ (anItem propertyAt: #bullet) asText , String tab ].
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
-	canvas cr.
+	canvas newLineIfNotAlready .
 	canvas << bullet.
 	self visitDocumentGroup: anItem.
-	canvas cr.
+	canvas newLineIfNotAlready .
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitMonospaceFormat: anObject [
 	self
 		flag:
@@ -344,7 +358,7 @@ PRRichTextComposer >> visitMonospaceFormat: anObject [
 	canvas includeAttribute: (TextColor color: Color magenta darker) in: [self visitFormat: anObject].  
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitOrderedList: anObject [
 	| counter |
 	canvas indentIn: [counter := 1.
@@ -353,39 +367,39 @@ PRRichTextComposer >> visitOrderedList: anObject [
 			item propertyAt: #kind put: #ordered.
 			item
 				propertyAt: #counter
-				put: (self counterFor: counter atLevel: canvas nesting-1).
+				put: (self class counterFor: counter atLevel: canvas nesting-1).
 			counter := counter + 1 ].
-	super visitOrderedList: anObject]
+	super visitOrderedList: anObject.]
 ]
 
 { #category : #'visiting-document' }
 PRRichTextComposer >> visitParagraph: anObject [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	super visitParagraph: anObject.
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitStrikethroughFormat: anObject [
 	canvas includeAttribute: TextEmphasis struckOut in: [ self visitFormat: anObject ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitSubscriptFormat: anObject [
 	canvas
 		includeAttribute: TextColor red
 		in: [ self visitFormat: anObject ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitSuperscriptFormat: anObject [
 	canvas
 		includeAttribute: TextColor blue
 		in: [ self visitFormat: anObject ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitTermItem: anItem [
-	canvas cr.
+	canvas newLineIfNotAlready .
 	canvas
 		includeAttribute: (TextIndent tabs: canvas nesting - 1)
 		in: [ canvas
@@ -393,18 +407,18 @@ PRRichTextComposer >> visitTermItem: anItem [
 				in: [ self visitDocumentGroup: anItem ] ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitText: anObject [
 	canvas << anObject text asText
 		" - should not be necessary addAttribute: (TextIndent tabs: canvas nesting)"
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitUnderlineFormat: anObject [
 	canvas includeAttribute: TextEmphasis underlined in: [ self visitFormat: anObject ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting-document' }
 PRRichTextComposer >> visitUnorderedList: anObject [
 	canvas
 		indentIn: [ anObject children
@@ -412,6 +426,6 @@ PRRichTextComposer >> visitUnorderedList: anObject [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						put: (self bulletForLevel: canvas nesting - 1) ].
-			super visitUnorderedList: anObject ]
+						put: (self class bulletForLevel: canvas nesting - 1) ].
+			super visitUnorderedList: anObject.]
 ]
