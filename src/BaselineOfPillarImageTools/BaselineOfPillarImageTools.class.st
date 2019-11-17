@@ -19,5 +19,6 @@ BaselineOfPillarImageTools >> baseline: spec [
 					with: [ spec repository:
 						'github://pillar-markup/pillar:dev-7' ];
 				package: 'Pillar-ExporterRichText';
-				package: 'Pillar-Calypso' ]
+				package: 'Pillar-Calypso';
+				package: 'GithubMarkdown' ]
 ]

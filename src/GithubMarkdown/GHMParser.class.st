@@ -34,6 +34,12 @@ GHMParser class >> asRichText: aString [
 	^PRRichTextComposer new start: (GHMParser new parse: aString) asPillar
 ]
 
+{ #category : #examples }
+GHMParser class >> example [
+	<example>
+	(self fromUrl: 'https://raw.githubusercontent.com/kasperosterbye/PillarRichTextRender/master/README.md') inspectWithLabel: 'PillarRichTextRender/README.md'
+]
+
 { #category : #'instance creation' }
 GHMParser class >> fromUrl: aUrl [
 	
