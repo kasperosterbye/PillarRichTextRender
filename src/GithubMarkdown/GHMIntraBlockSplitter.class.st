@@ -164,6 +164,8 @@ GHMIntraBlockSplitter >> spanOn: aString from: start to: end next: next kind: ki
 
 { #category : #public }
 GHMIntraBlockSplitter >> splitString: aString [
+	"Split aString into constituent markup nodes. A string is from a single line.
+	return an array of GHMInlineBlocks"
 	| start block rest |
 	start := aString indexOfAnyOf: self startSet.
 	start = 0

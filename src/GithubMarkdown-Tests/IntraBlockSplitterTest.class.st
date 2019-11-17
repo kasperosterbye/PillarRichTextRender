@@ -104,6 +104,19 @@ IntraBlockSplitterTest >> testSplitBlockLinkIncomplete [
 ]
 
 { #category : #tests }
+IntraBlockSplitterTest >> testSplitBlockLinkInlineImage [
+	"Test the link annotation [![alttext](imageurl)](url)"
+
+	| res |
+	res := GHMIntraBlockSplitter new
+		splitString: 'abc[![alttext](imageurl)](url)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[ [alttext]]' . 'last'}.
+	self assert: res second children second url equals: 'imageurl'
+]
+
+{ #category : #tests }
 IntraBlockSplitterTest >> testSplitBlockNested [
 	"Test with multiple annotations"
 
