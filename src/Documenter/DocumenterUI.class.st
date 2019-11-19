@@ -66,5 +66,5 @@ DocumenterUI >> initializeWidgets [
 { #category : #initialization }
 DocumenterUI >> setSelectedNode: sel [
 	editingNode := nodeTree selectedItem.
-	editor source: editingNode docString 
+	editor newSource: editingNode docString.
 ]

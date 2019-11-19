@@ -84,6 +84,15 @@ PillarTextPresenter >> initialize [
 			false ]
 ]
 
+{ #category : #'instance creation' }
+PillarTextPresenter >> newSource: newSource [
+	self source: newSource.
+	self text: self asRenderedText.
+	isRendering := true.
+	self color: (self renderColor ).
+	self disable
+]
+
 { #category : #showing }
 PillarTextPresenter >> openWithSpec [
 	super openWithSpec .
@@ -104,7 +113,8 @@ PillarTextPresenter >> source [
 
 { #category : #accessing }
 PillarTextPresenter >> source: aText [
-	source := aText asString
+	source := aText asString.
+	self update: self. 
 ]
 
 { #category : #'as yet unclassified' }
