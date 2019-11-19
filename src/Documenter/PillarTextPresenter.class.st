@@ -53,11 +53,7 @@ PillarTextPresenter >> announceDisplayed [
 
 { #category : #accessing }
 PillarTextPresenter >> asRenderedText [
-	^ PRRichTextComposer new
-		start:
-			(PRPillarParserMain
-				initialize;
-				parse: source)
+	^ PRRichTextComposer renderComment: source
 ]
 
 { #category : #'as yet unclassified' }

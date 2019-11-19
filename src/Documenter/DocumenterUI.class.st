@@ -16,7 +16,7 @@ Class {
 
 { #category : #specs }
 DocumenterUI class >> defaultSpec [
-	^ SpBoxLayout newHorizontal 
+	^ SpBoxLayout newHorizontal
 		add: #nodeTree;
 		add: #editor;
 		yourself
