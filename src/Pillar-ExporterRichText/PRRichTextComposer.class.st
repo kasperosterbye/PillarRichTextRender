@@ -221,6 +221,18 @@ PRRichTextComposer >> visitCodeblock: aCodeBlock [
 	canvas newLineIfNotAlready .
 	canvas
 		indentIn: [ 
+			canvas << (PRRichTextCodeblokStyler  
+				style: aCodeBlock text 
+				asLanguage: aCodeBlock language originalName)
+			].
+	canvas cr.
+]
+
+{ #category : #'visiting-document' }
+PRRichTextComposer >> visitCodeblock_old: aCodeBlock [
+	canvas newLineIfNotAlready .
+	canvas
+		indentIn: [ 
 			(#('' 'Smalltalk') includes: aCodeBlock language originalName)
 				ifTrue: [ canvas << (SHRBTextStyler new 
 								isForWorkspace: true; 
