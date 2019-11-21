@@ -17,10 +17,7 @@ To define a new styler for a different language or format you should do the foll
 "
 Class {
 	#name : #PRRichTextCodeblokStyler,
-	#superclass : #PRVisitor,
-	#classInstVars : [
-		'Stylers'
-	],
+	#superclass : #Object,
 	#category : #'Pillar-ExporterRichText'
 }
 
@@ -34,13 +31,12 @@ PRRichTextCodeblokStyler class >> defaultStyler: aString [
 
 { #category : #'as yet unclassified' }
 PRRichTextCodeblokStyler class >> languageStylerFor: aLanguage [
-	Stylers
-		ifNil: [ Stylers := Dictionary
-				newFromAssociations:
-					((PragmaCollector
+	| stylers |
+	stylers := Dictionary
+		newFromAssociations: ((PragmaCollector
 						filter: [ :prg | prg selector = 'codeblockStylerFor:' ]) reset
-						collected collect: [ :p | p arguments first -> p method ]) ].
-	^ Stylers
+						collected collect: [ :p | p arguments first -> p method ]).
+	^ stylers
 		at: aLanguage
 		ifAbsent: [ self languageStylerFor: 'default' ]
 ]
