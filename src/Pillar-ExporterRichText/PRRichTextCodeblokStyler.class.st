@@ -53,8 +53,10 @@ PRRichTextCodeblokStyler class >> smalltalkStylerFor: aString [
 { #category : #'as yet unclassified' }
 PRRichTextCodeblokStyler class >> style: aString asLanguage: aLanguage [
 	"render aString according to the styler named aLanguage"
-	^(self languageStylerFor: aLanguage) 
-		valueWithReceiver: self 
+	|styler|
+	styler := self languageStylerFor: aLanguage.
+	^ styler
+		valueWithReceiver: styler methodClass soleInstance 
 		arguments:  (Array with: aString)
 ]
 
