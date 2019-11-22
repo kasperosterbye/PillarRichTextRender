@@ -1,8 +1,18 @@
 Class {
 	#name : #PRCodeblokStylerExtensions,
 	#superclass : #Object,
+	#classInstVars : [
+		'imageCache'
+	],
 	#category : #'Pillar-CodeblokStylerExtensions'
 }
+
+{ #category : #accessing }
+PRCodeblokStylerExtensions class >> imageCache [
+	imageCache ifNil: [ imageCache := LRUCache new ].
+	^imageCache
+	
+]
 
 { #category : #examples }
 PRCodeblokStylerExtensions class >> latexExample [
@@ -18,14 +28,19 @@ Cool eh?
 ') inspect
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #styling }
 PRCodeblokStylerExtensions class >> latexMathStylerFor: aString [
 	<codeblockStylerFor:'latexMath'>
-	| anchoredImage serverUrl |
-	serverUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
-	[anchoredImage := (String value: 1) asText
-		addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: serverUrl)).
-		^anchoredImage ] 
-		on: Exception 
-		do: [^ 'LatexError' asText addAttribute: (TextColor red)].
+	| hash anchoredImage|
+	hash := (SHA1 new hashStream: aString readStream) hex.
+	anchoredImage := self imageCache 
+		at: hash 
+		ifAbsentPut: [ |  serverUrl |
+			[serverUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
+			anchoredImage := (String value: 1) asText
+				addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: serverUrl)).
+				anchoredImage ] 
+			on: Exception 
+			do: ['LatexError' asText addAttribute: (TextColor red)]].
+	^ anchoredImage 
 ]
