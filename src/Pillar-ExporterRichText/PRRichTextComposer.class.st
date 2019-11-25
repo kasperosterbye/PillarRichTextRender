@@ -24,15 +24,19 @@ PRRichTextComposer class >> asText: aStreamOrString [
 PRRichTextComposer class >> browse: urlString [
 	"I am a url on the form: browse://Class or browse://Class/method"
 
-	| parts class method |
-	parts := urlString substrings: '/'.
-	class := parts at: 2.
+	| parts classPart theClass method |
+	parts := urlString substrings: '/'. 
+	classPart := parts at: 2.
+	"handle class side also"
+	theClass := (classPart endsWith: ' class')
+		ifFalse: [ classPart asClass ]
+		ifTrue: [ (classPart withoutSuffix: ' class') asClass class ].
 	method := parts size > 2
 		ifTrue: [ (parts at: 3) asSymbol ]
 		ifFalse: [ nil ].
 	method
-		ifNil: [ class asClass browse ]
-		ifNotNil: [ (class asClass >> method) browse ]
+		ifNil: [ theClass browse ]
+		ifNotNil: [ (theClass >> method) browse ]
 ]
 
 { #category : #private }

@@ -1,3 +1,23 @@
+"
+!!! Purpose
+I am a class that provide Pillar codebloc extensions for Latex and PlantUML.
+
+That mean you can write latex formulas using a codeblock ==language=latexMath==:
+[[[language=latexMath
+\sum_{i=1}^{n} a[i]
+]]]
+
+or write *Plantuml syntax>http://plantuml.com* using a codeblock ==language=plantuml==:
+[[[language=plantuml
+@startuml
+[*] --> State1
+State1 --> [*]
+State1 -> State2
+State2 --> [*]
+@enduml
+]]]	
+
+"
 Class {
 	#name : #PRCodeblokStylerExtensions,
 	#superclass : #Object,
@@ -7,11 +27,16 @@ Class {
 	#category : #'Pillar-CodeblokStylerExtensions'
 }
 
-{ #category : #accessing }
+{ #category : #private }
 PRCodeblokStylerExtensions class >> imageCache [
 	imageCache ifNil: [ imageCache := LRUCache new ].
 	^imageCache
 	
+]
+
+{ #category : #private }
+PRCodeblokStylerExtensions class >> initialize [
+	imageCache := nil.
 ]
 
 { #category : #examples }
@@ -31,16 +56,52 @@ Cool eh?
 { #category : #styling }
 PRCodeblokStylerExtensions class >> latexMathStylerFor: aString [
 	<codeblockStylerFor:'latexMath'>
-	| hash anchoredImage|
-	hash := (SHA1 new hashStream: aString readStream) hex.
+	| expressionUrl |
+	expressionUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
+	^self loadExternalImageFromURL: expressionUrl errorText: 'Latex error'.
+]
+
+{ #category : #private }
+PRCodeblokStylerExtensions class >> loadExternalImageFromURL: aUrl errorText: errorDesc [
+	"I return a Text instance with an loaded from a url"
+	| anchoredImage|
 	anchoredImage := self imageCache 
-		at: hash 
-		ifAbsentPut: [ |  serverUrl |
-			[serverUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
-			anchoredImage := (String value: 1) asText
-				addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: serverUrl)).
+		at: aUrl 
+		ifAbsentPut: [ 
+			[ anchoredImage := (String value: 1) asText
+				addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: aUrl)).
 				anchoredImage ] 
 			on: Exception 
-			do: ['LatexError' asText addAttribute: (TextColor red)]].
+			do: [errorDesc  asText addAttribute: (TextColor red)]
+		].
 	^ anchoredImage 
+]
+
+{ #category : #examples }
+PRCodeblokStylerExtensions class >> plantUMLExample [
+	<example>
+	(PRRichTextComposer  asText:
+'!!!PlantUML diagrams 
+It is possible to render PlantUML:
+[[[language=plantuml
+@startuml
+actor Bob #red
+participant Alice
+participant "Log" as L #99FF99
+
+Alice->Bob: Authentication Request
+Bob->Alice: Authentication Response
+Bob->L: Log transaction
+@enduml
+]]]
+UML - sooo yesterday
+') inspect
+]
+
+{ #category : #styling }
+PRCodeblokStylerExtensions class >> plantumlStylerFor: source [
+	<codeblockStylerFor:'plantuml'>
+	| imageUrl |
+	imageUrl := PRPlantUMLUrlFromSource urlFromSource: source.
+	^self loadExternalImageFromURL: imageUrl errorText: 'PlantUML error'.
 ]
