@@ -28,7 +28,7 @@ PlantUMLFromTally class >> seqDiagramFor: aBlock in: packageList [
 PlantUMLFromTally class >> seqDiagramFor: aBlock in: packageList skipSelectors: selectors [
 	|  ulmSource |
 	ulmSource := self new umlForBlock: aBlock  in: packageList  skipSelectors: selectors .
-	^ PRCodeblokStylerExtensions loadUML: ulmSource.
+	^ PRPlantUMLUrlFromSource loadUML: ulmSource.
 ]
 
 { #category : #'as yet unclassified' }
