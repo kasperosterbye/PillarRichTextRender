@@ -1,21 +1,13 @@
 "
 !!! Purpose
-I am a class that provide Pillar codebloc extensions for Latex and PlantUML.
+I am a class that provide Pillar codebloc extensions for Latex (and others in the future).
 
 That mean you can write latex formulas using a codeblock ==language=latexMath==:
+
+
 [[[language=latexMath
 \sum_{i=1}^{n} a[i]
 ]]]
-
-or write *Plantuml syntax>http://plantuml.com* using a codeblock ==language=plantuml==:
-[[[language=plantuml
-@startuml
-[*] --> State1
-State1 --> [*]
-State1 -> State2
-State2 --> [*]
-@enduml
-]]]	
 
 "
 Class {
@@ -75,33 +67,4 @@ PRCodeblokStylerExtensions class >> loadExternalImageFromURL: aUrl errorText: er
 			do: [errorDesc  asText addAttribute: (TextColor red)]
 		].
 	^ anchoredImage 
-]
-
-{ #category : #examples }
-PRCodeblokStylerExtensions class >> plantUMLExample [
-	<example>
-	(PRRichTextComposer  asText:
-'!!!PlantUML diagrams 
-It is possible to render PlantUML:
-[[[language=plantuml
-@startuml
-actor Bob #red
-participant Alice
-participant "Log" as L #99FF99
-
-Alice->Bob: Authentication Request
-Bob->Alice: Authentication Response
-Bob->L: Log transaction
-@enduml
-]]]
-UML - sooo yesterday
-') inspect
-]
-
-{ #category : #styling }
-PRCodeblokStylerExtensions class >> plantumlStylerFor: source [
-	<codeblockStylerFor:'plantuml'>
-	| imageUrl |
-	imageUrl := PRPlantUMLUrlFromSource urlFromSource: source.
-	^self loadExternalImageFromURL: imageUrl errorText: 'PlantUML error'.
 ]
