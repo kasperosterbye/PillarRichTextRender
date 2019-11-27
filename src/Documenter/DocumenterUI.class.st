@@ -11,7 +11,7 @@ Class {
 		'editingNode',
 		'editor'
 	],
-	#category : #Documenter
+	#category : #'Documenter-DocumenterTool'
 }
 
 { #category : #specs }

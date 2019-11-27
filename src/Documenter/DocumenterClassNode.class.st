@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'class'
 	],
-	#category : #Documenter
+	#category : #'Documenter-DocumenterTool'
 }
 
 { #category : #'instance creation' }

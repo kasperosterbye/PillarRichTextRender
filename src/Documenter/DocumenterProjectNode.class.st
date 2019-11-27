@@ -5,7 +5,7 @@ Class {
 		'prefix',
 		'packages'
 	],
-	#category : #Documenter
+	#category : #'Documenter-DocumenterTool'
 }
 
 { #category : #'as yet unclassified' }

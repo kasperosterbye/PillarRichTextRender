@@ -11,7 +11,7 @@ Class {
 		'savedSenders',
 		'skipSelectors'
 	],
-	#category : #Documenter
+	#category : #'Documenter-Utillities'
 }
 
 { #category : #'as yet unclassified' }

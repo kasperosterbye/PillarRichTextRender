@@ -1,7 +1,7 @@
 Class {
 	#name : #DocumenterNode,
 	#superclass : #SpTreeTablePresenter,
-	#category : #Documenter
+	#category : #'Documenter-DocumenterTool'
 }
 
 { #category : #private }

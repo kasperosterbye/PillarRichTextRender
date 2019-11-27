@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'package'
 	],
-	#category : #Documenter
+	#category : #'Documenter-DocumenterTool'
 }
 
 { #category : #'as yet unclassified' }

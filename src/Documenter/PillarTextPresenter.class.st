@@ -8,7 +8,7 @@ Class {
 		'source',
 		'isRendering'
 	],
-	#category : #Documenter
+	#category : #'Documenter-Utillities'
 }
 
 { #category : #examples }
