@@ -99,7 +99,10 @@ GHMInlineBlock >> printOn: aStream [
 					each printOn: aStream.].
 			aStream nextPut: $] ]
 		ifNil:
-			[ start to: end do: [ :index | aStream nextPut: (string at: index) ] ]
+			[ start isNil | end isNil
+				ifTrue: [ aStream << 'Uninitialized GHMInlineBlock' ] 
+				ifFalse: [  
+			start to: end do: [ :index | aStream nextPut: (string at: index) ] ]]
 ]
 
 { #category : #'as yet unclassified' }
