@@ -14,6 +14,31 @@ Class {
 	#category : #'Documenter-Utillities'
 }
 
+{ #category : #examples }
+PlantUMLFromTally class >> example1 [
+	<example>
+	self openForm: (self 
+		seqDiagramFor: [ Float pi printString] 
+		in: {'Kernel-Numbers'. 'Collection-Strings'} 
+		skipSelectors: #(on:)).
+]
+
+{ #category : #examples }
+PlantUMLFromTally class >> example2 [
+	<example>
+	self openForm: (self seqDiagramFor: [ 4 factorial ]).
+]
+
+{ #category : #'as yet unclassified' }
+PlantUMLFromTally class >> openForm: form [
+	| window scrollPane |
+	window := SystemWindow labelled: 'Sequence Diagram'.
+	scrollPane := ScrollPane new.
+	scrollPane scroller addMorph: form asMorph.
+	window addMorph: scrollPane frame: (0@0 corner: 1@1).
+	window openInWorld.
+]
+
 { #category : #'as yet unclassified' }
 PlantUMLFromTally class >> seqDiagramFor: aBlock [ 
 	^ self seqDiagramFor: aBlock in: { '' }.
@@ -114,18 +139,23 @@ PlantUMLFromTally >> visit: aTally [
 
 { #category : #accessing }
 PlantUMLFromTally >> visit: sender to: aTally [
-	| senderName receiverName selector out |
+	| senderName receiverName selector out arrow|
 	senderName := self normalized: sender theClass.
 	receiverName :=  self normalized: aTally theClass.
 	selector := aTally method selector.
+	
+	arrow := (sender theClass inheritsFrom:  aTally method methodClass)
+		ifFalse: [  ' -> ' ]
+		ifTrue: [ ' -->> ' ].
 	out := '' writeStream .
 	(receiverName  = self catchAllName)
 		ifFalse: [
 			(senderName = self catchAllName)
-				ifTrue: [ senderName := savedSenders removeLast. selector := '...', selector ].
+				ifTrue: [ savedSenders ifNotEmpty: [senderName := savedSenders removeLast]. 
+							selector := '...', selector ].
 			out 
 				<< senderName 
-				<< ' -> '
+				<< arrow
 				<< receiverName
 				<< ': '
 				<< selector
