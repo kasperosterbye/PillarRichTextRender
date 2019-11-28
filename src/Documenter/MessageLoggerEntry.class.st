@@ -12,6 +12,11 @@ Class {
 	#category : #'Documenter-SequenceDiagram'
 }
 
+{ #category : #visiting }
+MessageLoggerEntry >> accept: aVisitor [
+	^ aVisitor visit: self
+]
+
 { #category : #adding }
 MessageLoggerEntry >> addChild: childEntry [
 	children add: childEntry.

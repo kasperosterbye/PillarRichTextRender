@@ -7,6 +7,11 @@ Class {
 	#category : #'Documenter-SequenceDiagram'
 }
 
+{ #category : #visiting }
+MessageLogger >> accept: aVisitor [
+	^ log accept: aVisitor
+]
+
 { #category : #'as yet unclassified' }
 MessageLogger >> logBlock: aBlock [
 	| prev |
@@ -36,6 +41,13 @@ MessageLogger >> logCall: aContext [
 
 { #category : #'as yet unclassified' }
 MessageLogger >> logReturn: aContext [
+| entry |
+	entry := MessageLoggerEntry new
+		sender: aContext sender receiver;
+		receiver: aContext receiver;
+		selector: #'^';
+		arguments: { aContext top };
+		yourself.
 	log parent 
 		ifNotNil: [ :p | log := p ]
 ]
