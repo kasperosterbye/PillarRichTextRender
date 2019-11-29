@@ -29,6 +29,11 @@ PillarTextPresenter class >> onSource: aString [
 	^self new source: aString
 ]
 
+{ #category : #'instance creation' }
+PillarTextPresenter class >> openOnSource: aString [
+	(self onSource: aString) openWithSpec
+]
+
 { #category : #examples }
 PillarTextPresenter class >> sampleSource [
 	^ '!!!First section
@@ -80,13 +85,30 @@ PillarTextPresenter >> initialize [
 			false ]
 ]
 
+{ #category : #'as yet unclassified' }
+PillarTextPresenter >> markBackgroundColors [
+	"Scan through text to find spans of TextBackgroundColor, and mark them as PillarInlineCodeSegmentMorphs."
+
+	| a |
+	a := self asRenderedText.
+	a runs
+		withStartStopAndValueDo: [ :start :stop :value | 
+			value do: [ :v | 
+					(v isKindOf: TextBackgroundColor)
+						ifTrue: [ self textArea addSegment: (PillarInlineCodeSegmentMorph
+								from: start
+								to: stop+1) ] ] ]
+]
+
 { #category : #'instance creation' }
 PillarTextPresenter >> newSource: newSource [
 	self source: newSource.
 	self text: self asRenderedText.
 	isRendering := true.
 	self color: (self renderColor ).
-	self disable
+	self disable.
+	
+	self markBackgroundColors .
 ]
 
 { #category : #showing }
@@ -127,7 +149,9 @@ PillarTextPresenter >> switchToRenderMode [
 	self text: self asRenderedText.
 	isRendering := true.
 	self color: (self renderColor ).
-	self disable
+	self disable.
+	
+	self markBackgroundColors.
 ]
 
 { #category : #accessing }

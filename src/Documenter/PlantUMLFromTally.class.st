@@ -129,12 +129,11 @@ PlantUMLFromTally >> visit: aTally [
 			ifFalse:  [
 				^'Activate ' , senderName, String cr,
 			 	receiversText,
-				'return return', String cr]
+				'Deactivate ', senderName, String cr
+				"'return return ', aTally method selector, String cr"]
 			ifTrue: [ ^receiversText  ]
 	].
 	^''.
-	
-	
 ]
 
 { #category : #accessing }

@@ -378,7 +378,7 @@ PRRichTextComposer >> visitMonospaceFormat: anObject [
 		flag:
 			'Should find a way to change the font to monospaced. 
 			Tricky as higher levels may change the size'.
-	canvas includeAttribute: (TextColor color: Color magenta darker) in: [self visitFormat: anObject].  
+	canvas includeAttribute: (TextBackgroundColor red) in: [self visitFormat: anObject].  
 ]
 
 { #category : #'visiting-document' }
