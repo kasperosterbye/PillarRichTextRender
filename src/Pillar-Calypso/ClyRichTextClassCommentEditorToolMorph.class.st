@@ -22,7 +22,9 @@ ClyRichTextClassCommentEditorToolMorph class >> classTabActivation [
 
 { #category : #'as yet unclassified' }
 ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
-	^ PRRichTextComposer renderComment:  super editingText
+	"Assumes we are in view pillar source mode. editingText does not return a Text in case of working with RGComment. asText turns it into a Text, and asString into a string, which is what we expect. 
+	If we have a real source code, asText asString is dummy and does not fail."
+	^ PRRichTextComposer renderComment:  super editingText asText asString
 ]
 
 { #category : #building }

@@ -22,7 +22,7 @@ ClyPackageRichTextCommentEditorToolMorph class >> browserTabActivation2 [
 
 { #category : #converting }
 ClyPackageRichTextCommentEditorToolMorph >> asRenderedText [
-	^ PRRichTextComposer renderComment:  super editingText
+	^ PRRichTextComposer renderComment:  super editingText asText asString
 ]
 
 { #category : #rendering }
