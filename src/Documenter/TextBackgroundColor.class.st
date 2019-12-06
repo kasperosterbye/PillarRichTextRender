@@ -1,7 +1,7 @@
 "
-I am a copy of class TextColor. This comment is copied from there, and might not be entirely accurate
+I am a text attribute representing background color of a text. I am used as any other TextAttribute.
 
-A TextColor encodes a text color change applicable over a given range of text.
+
 "
 Class {
 	#name : #TextBackgroundColor,

@@ -95,7 +95,7 @@ PillarTextPresenter >> markBackgroundColors [
 		withStartStopAndValueDo: [ :start :stop :value | 
 			value do: [ :v | 
 					(v isKindOf: TextBackgroundColor)
-						ifTrue: [ self textArea addSegment: (PillarInlineCodeSegmentMorph
+						ifTrue: [ self textArea addSegment: (TextBackgroundColorSegmentMorph
 								from: start
 								to: stop+1) ] ] ]
 ]
