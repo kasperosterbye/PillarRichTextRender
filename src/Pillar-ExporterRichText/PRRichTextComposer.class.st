@@ -67,7 +67,7 @@ PRRichTextComposer class >> example1 [
 	(self asText:
 					'!!!First section
 and this is just ""first"" line 
-# Line 1 More here More here More here More here More here More here More here More here More here More here
+# Line 1 More here More here ==More here More here== More here More here More here More here More here More here
 #- Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
 #- And one more --silly-- thingie
 # Line 2
@@ -96,9 +96,11 @@ PRRichTextComposer class >> example3 [
 	(self asText:
 					'!!!Code sections
 this is just ""first"" line
-[[[foo=bar|jack
-this is some code
-and more here
+[[[
+Metacello new
+   baseline: ''PillarRichTextExporter'';
+   repository: ''github://kasperosterbye/PillarRichTextRender'';
+   load.
 ]]]') inspect
 ]
 
@@ -159,10 +161,19 @@ PRRichTextComposer class >> headerLevelFont: level [
 PRRichTextComposer class >> renderComment: aSource [
 	"render aSource if it looks like it contains pillar. Otherwise just return aSource"
 	"Check to see if some of the more unusual sequences from pillar is inside aSource."
-	"Take care of using '#' in the beginning of the line, as there are comments which starts with a symbol, #foo is bla bla".
-	^(aSource matchesRegex: '.*(""|^!|^# |^\[\[\[).*') 
-				ifTrue: [ self asText: aSource ] 
-				ifFalse: [ aSource ]
+	"Only accepts # as a sign of list if it is followed by space, to not recognize symbols	"
+	"Do not match bullet list with -, as it is used extensively in non-pillar"
+	
+	"If it is not pillar, perhaps it is github. However, only render as github if that class is present"
+	
+	^ (aSource matchesRegex: '.*(==|""|^!|^# |^\[\[\[).*')
+		  ifTrue: [ self asText: aSource ]
+		  ifFalse: [ 
+			  (aSource matchesRegex: '.*(`|**|^##|```|^>).*)') 
+				  ifTrue: [ 
+					  (self class environment at: 'GHMParser' ifAbsent: [ ^ aSource ]) 
+						  asText: aSource ]
+				  ifFalse: [ aSource ] ]
 ]
 
 { #category : #visiting }
@@ -374,11 +385,12 @@ PRRichTextComposer >> visitListItem: anItem [
 
 { #category : #'visiting-document' }
 PRRichTextComposer >> visitMonospaceFormat: anObject [
-	self
-		flag:
-			'Should find a way to change the font to monospaced. 
-			Tricky as higher levels may change the size'.
-	canvas includeAttribute: (TextBackgroundColor red) in: [self visitFormat: anObject].  
+	"Notice - I add a highlight to the backgorund rather than mono-spaced."
+	| backgroundColor |
+	backgroundColor := Smalltalk ui theme settings windowColor .
+	canvas 
+		includeAttribute: (TextBackgroundColor color: backgroundColor) 
+		in: [self visitFormat: anObject].  
 ]
 
 { #category : #'visiting-document' }
