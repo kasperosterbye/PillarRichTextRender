@@ -22,6 +22,6 @@ BaselineOfPillarRichTextRender >> baseline: spec [
 				package: 'Pillar-Calypso' with: [ spec requires: #('Pillar-ExporterRichText' 'GithubMarkdown') ].
 				
 			spec
-				group: 'Exporter' with: #('Pillar-ExporterRichText').
+				group: 'ExporterOnly' with: #('Pillar-ExporterRichText').
 		]
 ]
