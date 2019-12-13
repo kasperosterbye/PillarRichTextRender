@@ -28,27 +28,19 @@ Load it using Metacello:
 
 ```Smalltalk
 Metacello new
-   baseline: 'PillarRichTextExporter';
+   baseline: 'PillarRichTextRender';
    repository: 'github://kasperosterbye/PillarRichTextRender';
    load.
 ```
 
+> Warning: this load will redefine a the class and package comment editors of the Calypso browser
+
+
 Once loaded, the class `PRRichTextComposer` has some examples on the class side.
 
-### Pillar in class and package comments
+Once loaded the class comments and package comments will be rendered in pillar. Most such comments are not in pillar. It tries to guess if the comment is pillar or plain text (by looking for a few key markdowns). 
 
-*Warning: this load will redefine a corner of the Calypso browser*
-
-```Smalltalk
-Metacello new
-	baseline: 'PillarImageTools';
-	repository: 'github://kasperosterbye/PillarRichTextRender';
-	load	
-```
-
-Once loaded the class comments and package comments will be rendered in pillar. Most comments are not in pillar. It tries to guess if the comment is pillar or plain text (by looking for a few key markdowns). 
-
-At the moment you cannot edit the rendered text directly, but pressing `meta-r` (also known as `command-r`) will toggle between rendered and source mode. In source mode you can edit the source. Accepting the changes reverts back to rendered mode.
+At the moment you cannot edit the rendered text directly, but pressing `meta-r` (also known as `command-r`) will drop out of rendered and into source mode. In source mode you can edit the source. Accepting the changes reverts back to rendered mode.
 
 ### Github markdown
 
