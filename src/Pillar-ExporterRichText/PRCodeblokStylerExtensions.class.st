@@ -16,7 +16,7 @@ Class {
 	#classInstVars : [
 		'imageCache'
 	],
-	#category : #'Pillar-CodeblokStylerExtensions'
+	#category : #'Pillar-ExporterRichText'
 }
 
 { #category : #private }

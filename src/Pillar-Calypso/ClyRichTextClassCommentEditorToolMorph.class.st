@@ -1,5 +1,7 @@
 "
 I am a replacement tool for """"class"""" comments. 
+
+I need to be refactored somehow as ==ClyPackageRichTextCommentEditorToolMorph== and ==ClyRichTextClassCommentEditorToolMorph== are basically identical
 "
 Class {
 	#name : #ClyRichTextClassCommentEditorToolMorph,
@@ -20,21 +22,21 @@ ClyRichTextClassCommentEditorToolMorph class >> classTabActivation [
 	"Do nothing - part of a hack for overriding the class comment tool in Calypso"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
 	"Assumes we are in view pillar source mode. editingText does not return a Text in case of working with RGComment. asText turns it into a Text, and asString into a string, which is what we expect. 
 	If we have a real source code, asText asString is dummy and does not fail."
 	^ PRRichTextComposer renderComment:  super editingText asText asString
 ]
 
-{ #category : #building }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> buildTextMorph [
 	super buildTextMorph.
 	self setBackgroundColor: self renderColor.
 	self bindKeyCombination: $r command toAction: [ self toggleMode ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> changesAccepted [
 	| res |
 	res := super changesAccepted.
@@ -42,7 +44,7 @@ ClyRichTextClassCommentEditorToolMorph >> changesAccepted [
 	^res
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> disable [
 	textMorph enabled: false
 ]
@@ -52,19 +54,19 @@ ClyRichTextClassCommentEditorToolMorph >> editColor [
 	^self theme backgroundColor 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> editingText [
 	isRendering 
 		ifTrue: [ ^ self asRenderedText  ]
 		ifFalse: [ ^ super editingText ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> enable [
 	textMorph enabled: true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> initialize [
 	super initialize.
 	isRendering := true.
@@ -74,7 +76,7 @@ ClyRichTextClassCommentEditorToolMorph >> initialize [
 { #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> renderColor [
 	self theme backgroundColor lightness < 0.5
-		ifTrue: [ ^ self theme backgroundColor lighter ]
+		ifTrue: [ ^ self theme backgroundColor + (Color r: 0.0 g: 0.04 b:0.08 )]
 		ifFalse: [ ^self theme backgroundColor darker ]
 ]
 
@@ -85,7 +87,7 @@ ClyRichTextClassCommentEditorToolMorph >> setBackgroundColor: aColor [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> switchToEditMode [
 	isRendering := false.
 	self enable.
@@ -93,7 +95,7 @@ ClyRichTextClassCommentEditorToolMorph >> switchToEditMode [
 	self triggerUpdate
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> switchToRenderMode [
 	self hasUnacceptedEdits
 		ifTrue: [ ^ self ].
@@ -103,7 +105,7 @@ ClyRichTextClassCommentEditorToolMorph >> switchToRenderMode [
 	self triggerUpdate
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> toggleMode [
 	isRendering
 		ifTrue: [ self switchToEditMode ]

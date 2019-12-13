@@ -34,6 +34,11 @@ GHMParser class >> asRichText: aString [
 	^PRRichTextComposer new start: (GHMParser new parse: aString) asPillar
 ]
 
+{ #category : #converting }
+GHMParser class >> asText: aString [
+	^PRRichTextComposer new start: (GHMParser new parse: aString) asPillar
+]
+
 { #category : #examples }
 GHMParser class >> example [
 	<example>
@@ -43,7 +48,7 @@ GHMParser class >> example [
 { #category : #'instance creation' }
 GHMParser class >> fromUrl: aUrl [
 	
-	^self asRichText:   
+	^self asText:   
 		(ZnClient new 
 			beOneShot;
 			get: aUrl;

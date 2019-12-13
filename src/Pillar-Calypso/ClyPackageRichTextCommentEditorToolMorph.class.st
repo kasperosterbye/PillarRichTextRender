@@ -1,5 +1,8 @@
 "
-I am a replacement for the package comments tool
+I am a replacement for the """"package comments"""" tool.
+
+
+I need to be refactored somehow as ==ClyPackageRichTextCommentEditorToolMorph== and ==ClyRichTextClassCommentEditorToolMorph== are basically identical
 "
 Class {
 	#name : #ClyPackageRichTextCommentEditorToolMorph,
@@ -20,7 +23,7 @@ ClyPackageRichTextCommentEditorToolMorph class >> browserTabActivation2 [
 	"Do nothing - part of a hack for overriding the class package tool in Calypso"
 ]
 
-{ #category : #converting }
+{ #category : #rendering }
 ClyPackageRichTextCommentEditorToolMorph >> asRenderedText [
 	^ PRRichTextComposer renderComment:  super editingText asText asString
 ]
