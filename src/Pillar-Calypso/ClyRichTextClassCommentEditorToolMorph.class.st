@@ -34,6 +34,7 @@ ClyRichTextClassCommentEditorToolMorph >> buildTextMorph [
 	super buildTextMorph.
 	self setBackgroundColor: self renderColor.
 	self bindKeyCombination: $r command toAction: [ self toggleMode ].
+	self disable 
 ]
 
 { #category : #rendering }
