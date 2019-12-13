@@ -75,7 +75,7 @@ ClyPackageRichTextCommentEditorToolMorph >> initialize [
 { #category : #rendering }
 ClyPackageRichTextCommentEditorToolMorph >> renderColor [
 	self theme backgroundColor lightness < 0.5
-		ifTrue: [ ^ self theme backgroundColor lighter ]
+		ifTrue: [ ^ self theme backgroundColor + (Color r: 0.0 g: 0.04 b:0.08 )]
 		ifFalse: [ ^self theme backgroundColor darker ]
 ]
 
