@@ -142,6 +142,20 @@ this is just ""first"" line
 and this is the second line') inspect
 ]
 
+{ #category : #examples }
+PRRichTextComposer class >> exampleLatexMath [
+	<example>
+	(PRRichTextComposer  asText:
+'!!!Latex mathematics 
+It is possible to render latex math:
+[[[language=latexMath
+V_i = C_0 - C_3
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
+]]]
+Cool eh?
+') inspect
+]
+
 { #category : #private }
 PRRichTextComposer class >> headerLevelFont: level [
 	"I return a font annotation to be used with Attributes"
@@ -169,7 +183,7 @@ PRRichTextComposer class >> renderComment: aSource [
 	^ (aSource matchesRegex: '.*(==|""|^!|^# |^\[\[\[).*')
 		  ifTrue: [ self asText: aSource ]
 		  ifFalse: [ 
-			  (aSource matchesRegex: '.*(`|**|^##|```|^>).*)') 
+			  (aSource matchesRegex: '.*(`|\*\*|^##|```|^>).*') 
 				  ifTrue: [ 
 					  (self class environment at: 'GHMParser' ifAbsent: [ ^ aSource ]) 
 						  asText: aSource ]
