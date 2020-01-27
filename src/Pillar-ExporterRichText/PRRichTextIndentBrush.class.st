@@ -9,5 +9,6 @@ Class {
 
 { #category : #paint }
 PRRichTextIndentBrush >> paint: aText [	
-	aText addAttribute: (TextIndent tabs: canvas nesting).
+	canvas nesting isZero ifFalse: [  
+		aText addAttribute: (TextIndent tabs: canvas nesting) ]
 ]
