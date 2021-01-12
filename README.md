@@ -1,5 +1,11 @@
 # PillarRichTextRender
-Rendering the Pillar markup inside the Pharo image
+
+### This project was absorbed into Pharo 9.
+It will no longer be maintained.
+
+----
+
+Rendering the Pillar markup inside the Pharo image.
 
 This is work in (early) progress, but I think it is far enough for a "technology preview". 
 
